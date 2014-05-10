@@ -9,17 +9,28 @@
     <url>http://l-lin.github.io</url>
 
     <properties>
+        <assertj.version>1.5.0</assertj.version>
         <common.lang3.version>3.3.2</common.lang3.version>
         <guava.version>17.0</guava.version>
         <jsr305.version>1.3.9</jsr305.version>
         <junit.version>4.8.2</junit.version>
         <findbugs.version>2.5.3</findbugs.version>
+        <log4j.version>1.2.17</log4j.version>
+        <lombok.version>1.12.6</lombok.version>
         <mockito.version>1.8.4</mockito.version>
         <sl4j.version>1.7.2</sl4j.version>
         <spring.version>3.2.0.RELEASE</spring.version>
     </properties>
 
     <dependencies>
+        <!-- LOMBOK -->
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <version>${lombok.version}</version>
+            <scope>provided</scope>
+        </dependency>
+
         <!-- GUAVA -->
         <dependency>
             <groupId>com.google.guava</groupId>
@@ -54,6 +65,12 @@
             <scope>test</scope>
         </dependency>
         <dependency>
+            <groupId>org.assertj</groupId>
+            <artifactId>assertj-core</artifactId>
+            <version>${assertj.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-test</artifactId>
             <version>${spring.version}</version>
@@ -70,6 +87,11 @@
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-log4j12</artifactId>
             <version>${sl4j.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>log4j</groupId>
+            <artifactId>log4j</artifactId>
+            <version>${log4j.version}</version>
         </dependency>
 
         <dependency>
@@ -91,8 +113,8 @@
             <plugin>
                 <artifactId>maven-compiler-plugin</artifactId>
                 <configuration>
-                    <source>1.6</source>
-                    <target>1.6</target>
+                    <source>1.7</source>
+                    <target>1.7</target>
                 </configuration>
             </plugin>
             <plugin>
