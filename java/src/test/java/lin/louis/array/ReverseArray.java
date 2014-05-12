@@ -14,14 +14,14 @@ import static org.assertj.core.data.Index.atIndex;
  */
 public class ReverseArray {
     @Test
-    public void reverseArray() {
+    public void reverseOrderArray() {
         String[] array = new String[]{"Foo", "Bar", "Moliku", "Foobar"};
 
         Arrays.sort(array, Collections.reverseOrder());
 
-        assertThat(array).isNotNull().contains("Foobar", atIndex(0))
-                .contains("Moliku", atIndex(1))
-                .contains("Bar", atIndex(2))
-                .contains("Foo", atIndex(3));
+        assertThat(array).isNotNull().contains("Moliku", atIndex(0))
+                .contains("Foobar", atIndex(1))
+                .contains("Foo", atIndex(2))
+                .contains("Bar", atIndex(3));
     }
 }

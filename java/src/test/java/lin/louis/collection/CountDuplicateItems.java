@@ -15,7 +15,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class CountDuplicateItems {
     @Test
     public void countDuplicateItems() {
-        List<String> list = newArrayList("A", "B", "C", "A", "D", "C", "A", "D", "A", "B", "B");
+        List<String> list = newArrayList("A", "B", "C", "A", "D", "C", "A", "A", "B", "B");
         assertThat(Collections.frequency(list, "A")).isEqualTo(4);
         assertThat(Collections.frequency(list, "B")).isEqualTo(3);
         assertThat(Collections.frequency(list, "C")).isEqualTo(2);

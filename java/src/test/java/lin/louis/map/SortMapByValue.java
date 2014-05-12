@@ -1,9 +1,11 @@
 package lin.louis.map;
 
-import com.google.common.collect.Lists;
 import org.junit.Test;
 
-import java.util.*;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
+import java.util.Map;
 
 import static com.google.common.collect.Lists.newLinkedList;
 import static com.google.common.collect.Maps.newHashMap;
@@ -22,12 +24,13 @@ public class SortMapByValue {
         map.put(5, "Moliku");
         map.put(2, "Foobar");
 
+        System.out.println("Unsorted map:");
         for (Map.Entry<Integer, String> entry : map.entrySet()) {
             System.out.println("Key: " + entry.getKey() + " - Value: " + entry.getValue());
         }
 
         map = sortMap(map);
-
+        System.out.println("\nSorted map:");
         for (Map.Entry<Integer, String> entry : map.entrySet()) {
             System.out.println("Key: " + entry.getKey() + " - Value: " + entry.getValue());
         }
