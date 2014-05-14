@@ -16,7 +16,6 @@ import static com.google.common.base.Preconditions.checkNotNull;
 import static org.assertj.core.api.Assertions.assertThat;
 
 /**
- * @author Oodrive
  * @author llin
  * @created 14/05/14 16:08
  */

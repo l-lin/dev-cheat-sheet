@@ -1,5 +1,4 @@
 /**
- * @author Oodrive
  * @author l.lin
  * @created 14/05/14 17:53
  */

@@ -9,7 +9,6 @@ import org.junit.Test;
 import static org.assertj.core.api.Assertions.assertThat;
 
 /**
- * @author Oodrive
  * @author llin
  * @created 14/05/14 10:36
  */
