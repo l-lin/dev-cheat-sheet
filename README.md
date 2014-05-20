@@ -6,3 +6,5 @@ Launch tests with the following command on the root folder of the project:
 ```
 $ mvn test
 ```
+
+Search your file by pressing `t` (press `shift+?` to see all Github shortcuts).
