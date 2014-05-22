@@ -4,6 +4,7 @@ import javax.inject.Inject;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
@@ -16,14 +17,14 @@ import static org.assertj.core.api.Assertions.assertThat;
  */
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {"classpath:spring-config-test.xml"})
-public class InjectBeanToPOJOServiceTest {
+public class InjectBeanToPOJO {
     @Inject
-    private InjectBeanToPOJOService injectBeanToPOJOService;
+    private AutowiredAnnotationBeanPostProcessor annotationBeanPostProcessor;
 
     @Test
     public void testInjectBean() {
         SimplePOJOWithInjectedBean pojo = new SimplePOJOWithInjectedBean();
-        injectBeanToPOJOService.processInjection(pojo);
+        annotationBeanPostProcessor.processInjection(pojo);
         assertThat(pojo.foo()).isEqualTo("foo");
     }
 }
