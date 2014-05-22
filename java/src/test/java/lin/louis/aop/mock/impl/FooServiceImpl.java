@@ -10,6 +10,8 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class FooServiceImpl implements FooService {
+    private String foo;
+
     @Override
     @AnnotationOnMethod(value = "FooAnnotation")
     public String foo(String param) {
