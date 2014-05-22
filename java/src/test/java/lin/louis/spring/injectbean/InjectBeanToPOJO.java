@@ -22,7 +22,7 @@ public class InjectBeanToPOJO {
     private AutowiredAnnotationBeanPostProcessor annotationBeanPostProcessor;
 
     @Test
-    public void testInjectBean() {
+    public void injectBean() {
         SimplePOJOWithInjectedBean pojo = new SimplePOJOWithInjectedBean();
         annotationBeanPostProcessor.processInjection(pojo);
         assertThat(pojo.foo()).isEqualTo("foo");

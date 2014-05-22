@@ -8,6 +8,11 @@ import org.springframework.stereotype.Component;
  */
 @Component
 public class BeanToInject {
+    /**
+     * Foo string.
+     *
+     * @return the string
+     */
     public String foo() {
         return "foo";
     }
