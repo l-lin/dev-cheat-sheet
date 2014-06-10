@@ -20,7 +20,10 @@
         <cglib.version>2.2.2</cglib.version>
         <common.lang3.version>3.3.2</common.lang3.version>
         <guava.version>17.0</guava.version>
+        <hibernate.validator.version>4.3.1.Final</hibernate.validator.version>
+        <javax.el.api.version>2.2.4</javax.el.api.version>
         <javax.inject.version>1</javax.inject.version>
+        <javax.validation.api.version>1.1.0.Final</javax.validation.api.version>
         <jsr305.version>1.3.9</jsr305.version>
         <junit.version>4.8.2</junit.version>
         <findbugs.version>2.5.3</findbugs.version>
@@ -93,6 +96,28 @@
             <groupId>cglib</groupId>
             <artifactId>cglib</artifactId>
             <version>${cglib.version}</version>
+        </dependency>
+
+        <!-- JSR 303 -->
+        <dependency>
+            <groupId>javax.validation</groupId>
+            <artifactId>validation-api</artifactId>
+            <version>${javax.validation.api.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>javax.el</groupId>
+            <artifactId>javax.el-api</artifactId>
+            <version>${javax.el.api.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.glassfish.web</groupId>
+            <artifactId>javax.el</artifactId>
+            <version>${javax.el.api.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.hibernate</groupId>
+            <artifactId>hibernate-validator</artifactId>
+            <version>${hibernate.validator.version}</version>
         </dependency>
 
         <!-- TESTS -->

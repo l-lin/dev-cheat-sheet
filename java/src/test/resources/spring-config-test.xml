@@ -9,4 +9,5 @@
     <aop:aspectj-autoproxy/>
     <context:annotation-config />
     <context:component-scan base-package="lin.louis"/>
+    <bean id="validator" class="org.springframework.validation.beanvalidation.LocalValidatorFactoryBean"/>
 </beans>
