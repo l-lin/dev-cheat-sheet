@@ -4,7 +4,6 @@ import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
 
 /**
- * @author Oodrive
  * @author llin
  * @created 10/06/14 18:20
  */

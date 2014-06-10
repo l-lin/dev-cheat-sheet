@@ -10,7 +10,6 @@ import static java.lang.annotation.ElementType.*;
 import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
 /**
- * @author Oodrive
  * @author llin
  * @created 10/06/14 18:19
  */
