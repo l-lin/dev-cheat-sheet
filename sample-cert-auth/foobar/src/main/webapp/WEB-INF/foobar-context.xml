@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans:beans xmlns="http://www.springframework.org/schema/security"
+             xmlns:security="http://www.springframework.org/schema/security"
+             xmlns:beans="http://www.springframework.org/schema/beans"
+             xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+             xmlns:context="http://www.springframework.org/schema/context"
+             xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.2.xsd
+           http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security-3.2.xsd
+           http://www.springframework.org/schema/context  http://www.springframework.org/schema/context/spring-context-3.2.xsd
+">
+
+    <context:component-scan base-package="foo.bar" />
+
+    <security:http pattern="/favicon.ico" security='none' />
+
+    <security:http entry-point-ref="delegatingAEP">
+
+        <security:intercept-url pattern="/META-INF" access="IS_AUTHENTICATED_FULLY" />
+
+        <security:custom-filter position="PRE_AUTH_FILTER" ref="customFilter"/>
+    </security:http>
+
+    <beans:bean id="customAuthenticationProvider" class="foo.bar.X509CustomAuthenticationProvider"/>
+    <beans:bean id="delegatingAEP" class="foo.bar.X509CustomEntryPoint"/>
+
+    <security:authentication-manager alias="authenticationManager">
+        <security:authentication-provider ref="customAuthenticationProvider" />
+    </security:authentication-manager>
+
+    <beans:bean id="customFilter" class="foo.bar.X509CustomFilter">
+        <beans:property name="authenticationManager" ref="authenticationManager"/>
+    </beans:bean>
+</beans:beans>
