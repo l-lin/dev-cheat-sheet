@@ -7,6 +7,9 @@ then
     exit -1
 fi
 
+# Delete all previously created certificates
+find . ! -name '*.sh' -delete
+
 #######################################################
 # Certification Authority                             #
 #######################################################
