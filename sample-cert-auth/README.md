@@ -45,7 +45,7 @@ Accessing with a browser
 
 After generating the war, just put it on the `webapp` folder of your Tomcat and launch it.
 
-When it's fully deployed, access to [https://localhost:8443/foobar/], and you will see the following page:
+When it's fully deployed, access to [https://localhost:8443/foobar/](https://localhost:8443/foobar/), and you will see the following page:
 
 ![Not authenticated](https://raw.githubusercontent.com/l-lin/dev-cheat-sheet/master/sample-cert-auth/images/not_authenticated.png)
 
