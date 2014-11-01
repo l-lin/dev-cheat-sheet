@@ -1,4 +1,4 @@
-package common;
+package game.common.command;
 
 public enum Direction {
     N(0, -1),

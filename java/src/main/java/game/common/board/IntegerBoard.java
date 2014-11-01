@@ -1,4 +1,4 @@
-package common;
+package game.common.board;
 
 public class IntegerBoard {
     private static final int INITIAL_VALUE = 0;

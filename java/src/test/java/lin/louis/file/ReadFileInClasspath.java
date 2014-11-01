@@ -23,5 +23,16 @@ public class ReadFileInClasspath {
         IOUtils.copy(inputStream, writer, "UTF-8");
 
         assertThat(writer.toString()).isEqualTo("foobar");
+
+        readFileFromStatic();
+    }
+
+    public static void readFileFromStatic() throws IOException {
+        InputStream inputStream = ReadFileInClasspath.class.getClassLoader().getResourceAsStream("file/foo.txt");
+        assertThat(inputStream).isNotNull();
+        StringWriter writer = new StringWriter();
+        IOUtils.copy(inputStream, writer, "UTF-8");
+
+        assertThat(writer.toString()).isEqualTo("foobar");
     }
 }

@@ -1,4 +1,4 @@
-package common;
+package game.common.board;
 
 public class BooleanBoard {
     private boolean[][] board;

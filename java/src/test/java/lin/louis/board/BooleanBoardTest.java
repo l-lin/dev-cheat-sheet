@@ -1,6 +1,6 @@
 package lin.louis.board;
 
-import common.BooleanBoard;
+import game.common.board.BooleanBoard;
 import org.junit.Before;
 import org.junit.Test;
 

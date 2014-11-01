@@ -1,4 +1,4 @@
-package common;
+package game.common.entities;
 
 public class Point {
     private int x;

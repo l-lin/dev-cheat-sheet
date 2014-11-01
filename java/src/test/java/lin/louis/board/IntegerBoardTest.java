@@ -1,6 +1,6 @@
 package lin.louis.board;
 
-import common.IntegerBoard;
+import game.common.board.IntegerBoard;
 import org.junit.Before;
 import org.junit.Test;
 
