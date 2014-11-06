@@ -1,13 +1,12 @@
 package game.common.entities;
 
+import game.common.command.FourDirection;
+
 public class Point {
-    private int x;
-    private int y;
+    public int x;
+    public int y;
 
-    private Point() {
-    }
-
-    private Point(int x, int y) {
+    public Point(int x, int y) {
         this.x = x;
         this.y = y;
     }
@@ -16,8 +15,16 @@ public class Point {
         this(position.x, position.y);
     }
 
-    private Point add(Point pointToAdd) {
-        return new Point(x + pointToAdd.x, y + pointToAdd.y);
+    public Point add(int x, int y) {
+        return new Point(this.x + x, this.y + y);
+    }
+
+    public Point add(Point pointToAdd) {
+        return add(pointToAdd.x, pointToAdd.y);
+    }
+
+    public Point add(FourDirection direction) {
+        return add(direction.x, direction.y);
     }
 
     public void set(Point newPosition) {

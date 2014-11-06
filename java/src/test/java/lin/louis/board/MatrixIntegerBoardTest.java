@@ -1,18 +1,18 @@
 package lin.louis.board;
 
-import game.common.board.IntegerBoard;
+import game.common.board.MatrixIntegerBoard;
 import org.junit.Before;
 import org.junit.Test;
 
-public class IntegerBoardTest {
+public class MatrixIntegerBoardTest {
     private static final int NB_COLUMNS = 10;
     private static final int NB_ROWS = 10;
 
-    private IntegerBoard board;
+    private MatrixIntegerBoard board;
 
     @Before
     public void setUp() {
-        board = new IntegerBoard(NB_COLUMNS, NB_ROWS);
+        board = new MatrixIntegerBoard(NB_COLUMNS, NB_ROWS);
     }
 
     @Test
@@ -26,6 +26,12 @@ public class IntegerBoardTest {
         board.set(8, 7, 5);
         board.set(7, 9, 6);
         board.set(8, 7, 8);
+        System.out.println(board.toString());
+    }
+
+    @Test
+    public void floodFill() {
+        board.floodFill(2, 3);
         System.out.println(board.toString());
     }
 }
