@@ -1,4 +1,10 @@
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Queue;
+import java.util.Scanner;
+
 
 /**
  * Auto-generated code below aims at helping you parse
@@ -9,31 +15,14 @@ class Player {
 
     private static DistanceBoard distanceBoard;
     private static InputBoard inputBoard;
-    private static DirectionBoard directionBoard;
-    private static MatrixBooleanBoard availableBoard;
+    private static MatrixBooleanBoard wallsBoard;
+    private static Direction previousMove;
     private static Point pointC;
     private static Point pointT;
     private static boolean hasReachedC;
+    private static Node moves;
 
-    public enum Direction {
-        UP(0, -1, "U"),
-        RIGHT(1, 0, "R"),
-        DOWN(0, 1, "D"),
-        LEFT(-1, 0, "L"),
-        WAIT(0, 0, "-");
-
-        public int x;
-        public int y;
-        public String small;
-
-        private Direction(int x, int y, String small) {
-            this.x = x;
-            this.y = y;
-            this.small = small;
-        }
-    }
-
-    public static void main(String args[]) {
+    public static void main(String args[]) throws CloneNotSupportedException {
         Scanner in = new Scanner(System.in);
         int R = in.nextInt(); // number of rows.
         int C = in.nextInt(); // number of columns.
@@ -46,7 +35,7 @@ class Player {
         while (true) {
             // Avoid freezing the browser...
             nbRounds++;
-            if (nbRounds > 100) {
+            if (nbRounds > 250) {
                 break;
             }
 
@@ -57,31 +46,52 @@ class Player {
             debug("R = " + R + " - C = " + C);
             debug("kx = " + kx + " - ky = " + ky);
 
-            availableBoard = new MatrixBooleanBoard(R, C);
-            inputBoard = new InputBoard(in, R, C, kx, ky, availableBoard);
+            wallsBoard = new MatrixBooleanBoard(R, C);
+            inputBoard = new InputBoard(in, R, C, kx, ky, wallsBoard);
             distanceBoard = new DistanceBoard(R, C);
-            directionBoard = new DirectionBoard(R, C);
             hasReachedC = computeHasReachedC(hasReachedC, kx, ky);
 
-            BestMove bestMove;
-            bestMove = floodFill(kx, ky);
+            debug(inputBoard.toString());
+
             if (hasReachedC) {
+                debug("---------------- GOING BACK TO T ----------------");
                 // Going back to T
-                bestMove = pathFinding(kx, ky, pointT);
+                moves = pathFinding(kx, ky, pointT);
             } else {
+                boolean canGoToC = false;
                 if (hasFoundC()) {
                     // Going to C
-                    bestMove = pathFinding(kx, ky, pointC);
+                    Node newMoves = pathFinding(kx, ky, pointC);
+                    // C is reachable
+                    if (newMoves != null) {
+                        debug("---------------- GOING TO C ----------------");
+                        moves = newMoves;
+                        canGoToC = true;
+                    }
+                }
+                if (!canGoToC) {
+                    if (moves == null) {
+                        BestMove bestMove = floodFill(wallsBoard, kx, ky);
+                        debug("BestMove = " + bestMove.toString());
+                        moves = pathFinding(kx, ky, new Point(bestMove.x, bestMove.y));
+                        debug(distanceBoard.toString());
+                    }
                 }
             }
 
+            debug(moves.toString());
+            inputBoard.replace(moves);
             debug(inputBoard.toString());
-            debug(distanceBoard.toString());
-            debug(directionBoard.toString());
-            debug(bestMove.toString());
-            System.out.println(directionBoard.get(bestMove.x, bestMove.y));
+
+            Direction direction = moves.direction;
+            moves = moves.next;
+
+            previousMove = direction;
+            System.out.println(direction);
         }
     }
+
+    // FUNCTIONS
 
     private static boolean computeHasReachedC(boolean hasReachedC, int kx, int ky) {
         if (hasReachedC) {
@@ -90,52 +100,130 @@ class Player {
         return pointC != null && kx == pointC.x && ky == pointC.y;
     }
 
-    public static BestMove floodFill(int x, int y) {
+    public static BestMove floodFill(MatrixBooleanBoard walls, int kx, int ky) throws CloneNotSupportedException {
+        MatrixBooleanBoard maze = walls.copy();
         BestMove bestMove = new BestMove();
-        List<Point> edge = new ArrayList<>();
-        Point currentPoint = new Point(x, y);
-        edge.add(currentPoint);
 
+        Queue<Node> queue = new LinkedList<>();
+        Point kPoint = new Point(kx, ky);
+        queue.add(new Node(kPoint));
+        Node current;
         int currentDistance = 0;
-        distanceBoard.set(currentPoint, currentDistance);
-        while (edge.size() > 0) {
-            currentDistance++;
-            List<Point> toCheck = new ArrayList<>();
-            for (Point p : edge) {
-                for (Direction direction : Direction.values()) {
-                    Point newP = p.add(direction);
-                    if (distanceBoard.isOutOfRange(newP) ||
-                            distanceBoard.isVisited(newP) ||
-                            inputBoard.isBlocked(newP) ||
-                            inputBoard.isUnknown(newP)) {
-                        continue;
-                    }
-                    distanceBoard.set(newP, currentDistance);
-                    directionBoard.set(newP, direction);
+        distanceBoard.set(kPoint, currentDistance);
 
-                    int nbUnknownBlocks = inputBoard.computeNbUnknownBlocks(newP, direction);
-                    BestMove move = new BestMove(newP, currentDistance, nbUnknownBlocks);
+        while (!queue.isEmpty()) {
+            currentDistance++;
+            current = queue.remove();
+            for (Direction direction : Direction.values()) {
+                Point p = current.p.add(direction);
+                if (!distanceBoard.isOutOfRange(p) && !maze.isBlocked(p)) {
+                    current.next = new Node(p, current.direction != null ? current.direction : direction);
+                    current.next.previous = current;
+                    queue.add(current.next);
+                    maze.set(p, false);
+
+                    distanceBoard.set(p, currentDistance);
+
+                    int nbUnknownBlocks = inputBoard.computeNbUnknownBlocks(p, direction);
+                    BestMove move = new BestMove(p, currentDistance, nbUnknownBlocks);
                     int compareResult = BestMove.COMPARATOR.compare(move, bestMove);
-                    if (compareResult > 0) {
+                    if (computeWithPreviousMove(current, kx, ky) && compareResult > 0) {
                         bestMove = move;
                     }
-
-                    toCheck.add(newP);
                 }
             }
-            edge.clear();
-            edge.addAll(toCheck);
         }
         return bestMove;
     }
 
-    public static BestMove pathFinding(int x, int y, Point pointToGo) {
-        Node node = bfs(availableBoard, new Point(x, y), pointToGo);
-        return new BestMove(node.p.x, node.p.y);
+    private static boolean computeWithPreviousMove(Node current, int kx, int ky) {
+        if (previousMove == null) {
+            return true;
+        }
+        if (!previousMove.isOpposite(current.next.direction)) {
+            return true;
+        }
+        // Maybe we hit a wall?
+        for (Direction direction : Direction.values()) {
+            if (!direction.equals(current.next.direction)) {
+                if (!wallsBoard.isBlocked(new Point(kx, ky).add(direction))) {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+
+    public static Node pathFinding(int x, int y, Point pointToGo) throws CloneNotSupportedException {
+        return bfs(wallsBoard, new Point(x, y), pointToGo);
     }
 
     public static boolean hasFoundC() {
         return pointC != null;
+    }
+
+    public static Node bfs(MatrixBooleanBoard walls, Point start, Point end) throws CloneNotSupportedException {
+        MatrixBooleanBoard maze = walls.copy();
+        Queue<Node> queue = new LinkedList<>();
+        queue.add(new Node(start));
+        Node current;
+        Node goal = null;
+        while (!queue.isEmpty()) {
+            current = queue.remove();
+            for (Direction direction : Direction.values()) {
+                Point p = current.p.add(direction);
+                if (!distanceBoard.isOutOfRange(p) && !maze.isBlocked(p)) {
+                    current.next = new Node(p, direction);
+                    current.next.previous = current;
+
+                    queue.add(current.next);
+                    maze.set(p, false);
+                }
+            }
+            if (current.p.x == end.x && current.p.y == end.y) {
+                goal = current;
+                break;
+            }
+        }
+        if (goal != null) {
+            while(!goal.p.equals(start)) {
+                goal = goal.previous;
+            }
+            return goal.next;
+        }
+        // FAILLLLL!!!! t(-_-t)
+        return null;
+    }
+
+    public static void debug(String message) {
+        if (DEBUG) {
+            System.err.println(message);
+        }
+    }
+
+    // CLASSES
+
+    public enum Direction {
+        UP(0, -1, 'U', "DOWN"),
+        RIGHT(1, 0, 'R', "LEFT"),
+        DOWN(0, 1, 'D', "UP"),
+        LEFT(-1, 0, 'L', "RIGHT");
+
+        public int x;
+        public int y;
+        public char small;
+        private String opposite;
+
+        private Direction(int x, int y, char small, String opposite) {
+            this.x = x;
+            this.y = y;
+            this.small = small;
+            this.opposite = opposite;
+        }
+
+        public boolean isOpposite(Direction direction) {
+            return Direction.valueOf(this.opposite).equals(direction);
+        }
     }
 
     public static class InputBoard extends Board {
@@ -210,6 +298,14 @@ class Player {
             }
             return sb.toString();
         }
+
+        public void replace(Node moves) {
+            Node current = moves;
+            while(current != null) {
+                map[current.p.x][current.p.y] = current.direction.small;
+                current = current.next;
+            }
+        }
     }
 
     public static class MatrixBooleanBoard extends Board {
@@ -237,11 +333,20 @@ class Player {
         }
 
         public boolean isBlocked(int x, int y) {
-            return get(x, y);
+            return !get(x, y);
         }
 
         public boolean isBlocked(Point p) {
             return isBlocked(p.x, p.y);
+        }
+
+        public MatrixBooleanBoard copy() throws CloneNotSupportedException {
+            MatrixBooleanBoard clone = new MatrixBooleanBoard(nbRows, nbColumns);
+            for (int x = 0; x < nbColumns; x++) {
+                System.arraycopy(board[x], 0, clone.board[x], 0, nbRows);
+            }
+
+            return clone;
         }
 
         @Override
@@ -318,40 +423,6 @@ class Player {
         }
     }
 
-    public static class DirectionBoard extends Board {
-        private Direction[][] directions;
-        public DirectionBoard(int nbRows, int nbColumns) {
-            super(nbRows, nbColumns);
-            this.directions = new Direction[nbColumns][nbRows];
-            for (int x = 0; x < nbColumns; x++) {
-                for (int y = 0; y < nbRows; y++) {
-                    this.directions[x][y] = Direction.WAIT;
-                }
-            }
-        }
-
-        public Direction get(int x, int y) {
-            return directions[x][y];
-        }
-
-        public void set(Point p, Direction value) {
-            directions[p.x][p.y] = value;
-        }
-
-        @Override
-        public String toString() {
-            StringBuilder mapLine = new StringBuilder();
-            for (int y = 0; y < nbRows; y++) {
-                for (int x = 0; x < nbColumns; x++) {
-                    mapLine.append(get(x, y).small).append(" ");
-                }
-                mapLine.append('\n');
-            }
-
-            return mapLine.toString();
-        }
-    }
-
     public static class BestMove {
         public static final Comparator<BestMove> COMPARATOR = new Comparator<BestMove>() {
             @Override
@@ -360,7 +431,7 @@ class Player {
                     if (o1.distance == o2.distance) {
                         return 0;
                     }
-                    return o1.distance > o2.distance ? 1 : -1;
+                    return o1.distance > o2.distance ? -1 : 1;
                 }
                 return o1.nbUnknownBlocks > o2.nbUnknownBlocks ? 1 : -1;
             }
@@ -436,49 +507,33 @@ class Player {
         }
     }
 
-    public static Node bfs(MatrixBooleanBoard maze, Point start, Point end) {
-        Queue<Node> queue = new LinkedList<>();
-        queue.add(new Node(start));
-        Node current;
-        // BreadthFirstSearch algorithm.
-        while (!queue.isEmpty()) {
-            current = queue.remove();
-            for (Direction direction : Direction.values()) {
-                Point p = current.p.add(direction);
-                if (maze.isBlocked(p)) {
-                    current.next = new Node(p);
-                    current.next.previous = current;
-                    queue.add(current.next);
-                    maze.set(p, false);
-                }
-            }
-            if (current.p.x == end.x && current.p.y == end.y) {
-                return current;
-            }
-
-        }
-        // FAILLLLL!!!! t(-_-t)
-        return null;
-    }
-
     static class Node {
         Point p;
         Node next;
         Node previous;
+        Direction direction;
 
         public Node(Point p) {
             this.p = p;
+        }
+        public Node(Point p, Direction direction) {
+            this.p = p;
+            this.direction = direction;
         }
 
         public Node(Node next, Node prev) {
             this.next = next;
             this.previous = prev;
         }
-    }
 
-    public static void debug(String message) {
-        if (DEBUG) {
-            System.err.println(message);
+        public String toString() {
+            StringBuilder sb = new StringBuilder();
+            Node current = this;
+            while(current != null) {
+                sb.append(current.direction).append("-");
+                current = current.next;
+            }
+            return sb.toString();
         }
     }
 }
