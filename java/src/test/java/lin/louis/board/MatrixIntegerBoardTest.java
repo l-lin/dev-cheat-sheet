@@ -28,10 +28,4 @@ public class MatrixIntegerBoardTest {
         board.set(8, 7, 8);
         System.out.println(board.toString());
     }
-
-    @Test
-    public void floodFill() {
-        board.floodFill(2, 3);
-        System.out.println(board.toString());
-    }
 }
