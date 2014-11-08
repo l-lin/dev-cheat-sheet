@@ -3,6 +3,7 @@ package lin.louis.game.pathfinder;
 import lin.louis.game.common.board.MatrixBooleanBoard;
 import lin.louis.game.common.board.MatrixCharBoard;
 import lin.louis.game.common.Point;
+import lin.louis.game.common.command.FourDirection;
 import lin.louis.game.common.pathfinder.BreadthFirstSearch;
 import org.junit.Before;
 import org.junit.Test;
@@ -37,10 +38,31 @@ public class BreadthFirstSearchTest {
         System.out.println(board.toString());
     }
 
+    @Test
+    public void bfsForDirections() {
+        FourDirection[] moves = BreadthFirstSearch.bfsForDirections(
+                walls,
+                new Point(0, HEIGHT - 1),
+                new Point(WIDTH - 1, 0)
+        );
+        assertThat(moves).isNotNull();
+        replace(board, moves, new Point(0, HEIGHT - 1));
+        System.out.println(board.toString());
+    }
+
+
     private void replace(MatrixCharBoard board, BreadthFirstSearch.Node moves) {
         while (moves != null) {
             board.set(moves.p, moves.direction.name().charAt(0));
             moves = moves.next;
+        }
+    }
+
+    private void replace(MatrixCharBoard board, FourDirection[] moves, Point p) {
+        Point currentPoint = p;
+        for (FourDirection move : moves) {
+            currentPoint = currentPoint.add(move);
+            board.set(currentPoint, move.name().charAt(0));
         }
     }
 }

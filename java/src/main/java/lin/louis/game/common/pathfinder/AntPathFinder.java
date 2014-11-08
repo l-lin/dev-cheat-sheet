@@ -5,9 +5,9 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
+import lin.louis.game.common.Point;
 import lin.louis.game.common.board.MatrixBooleanBoard;
 import lin.louis.game.common.command.FourDirection;
-import lin.louis.game.common.Point;
 
 public class AntPathFinder {
     private static final int MAX_SIZE = 1;
@@ -41,7 +41,7 @@ public class AntPathFinder {
             size = ants.size();
             // Add babies to ants.
             while (size < MAX_SIZE && !babies.isEmpty()) {
-                ants.add(babies.remove(0)); //babies.size()-1
+                ants.add(babies.remove(0)); // babies.size()-1
                 size++;
             }
             if (size == 0) break;
