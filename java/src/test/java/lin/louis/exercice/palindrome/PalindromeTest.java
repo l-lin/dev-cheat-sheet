@@ -1,6 +1,5 @@
 package lin.louis.exercice.palindrome;
 
-import exercice.palindrome.Palindrome;
 import org.junit.Test;
 
 import java.util.List;

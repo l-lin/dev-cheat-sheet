@@ -1,6 +1,5 @@
 package lin.louis.exercice.mergesortedlists;
 
-import exercice.mergesortedlists.MergeSortedLists;
 import org.junit.Test;
 
 import java.util.List;

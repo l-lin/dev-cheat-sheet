@@ -1,6 +1,5 @@
 package lin.louis.exercice.fizzbuzz;
 
-import exercice.fizzbuzz.FizzBuzz;
 import org.junit.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;

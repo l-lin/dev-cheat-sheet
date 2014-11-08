@@ -1,6 +1,5 @@
 package lin.louis.exercice.factorial;
 
-import exercice.factorial.Factorial;
 import org.junit.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;

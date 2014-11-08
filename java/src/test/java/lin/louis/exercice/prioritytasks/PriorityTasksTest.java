@@ -1,6 +1,5 @@
 package lin.louis.exercice.prioritytasks;
 
-import exercice.prioritytasks.PriorityTask;
 import org.junit.Test;
 
 import java.util.List;

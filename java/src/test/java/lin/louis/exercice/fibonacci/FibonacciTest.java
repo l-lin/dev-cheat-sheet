@@ -1,6 +1,5 @@
 package lin.louis.exercice.fibonacci;
 
-import exercice.fibonacci.Fibonacci;
 import org.junit.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;

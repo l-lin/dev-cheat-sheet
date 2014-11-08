@@ -1,6 +1,5 @@
 package lin.louis.exercice.armstrong;
 
-import exercice.armstrong.Armstrong;
 import org.junit.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;

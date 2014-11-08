@@ -1,6 +1,5 @@
 package lin.louis.exercice.reversefizzbuzz;
 
-import exercice.reversefizzbuzz.ReverseFizzBuzz;
 import org.junit.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;

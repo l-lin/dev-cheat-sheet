@@ -1,6 +1,5 @@
 package lin.louis.exercice.duplicatesegment;
 
-import exercice.duplicatesegment.DuplicateSegment;
 import org.junit.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
