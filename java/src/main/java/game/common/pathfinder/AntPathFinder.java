@@ -16,35 +16,9 @@ public class AntPathFinder {
     // number of ants
     private static final int MAX_SIZE = 1;
 
-    private int distance = Integer.MAX_VALUE;
     private MatrixBooleanBoard mygrid;
     private MatrixBooleanBoard doneGrid;
 
-
-    public AntPathFinder() {
-        this(30000);
-    }
-
-    /**
-     * Initializes this pathfinder with a maximum possible distance for a path.
-     *
-     * @param maxDistance Maximum possible distance of a path in the grid.
-     */
-    public AntPathFinder(int maxDistance) {
-        this.distance = maxDistance;
-    }
-
-    public int getDistance() {
-        return distance;
-    }
-
-    /**
-     * Finds a shortest path given an array and a starting point and end point.
-     * Returns path in the form of an array of directions. <BR>
-     * 0 = up, 1 = right, 2 = down, 3 = left.
-     *
-     * @param grid True means it is an obstacle.
-     */
     public FourDirection[] findPath(MatrixBooleanBoard grid, int x1, int y1, int x2, int y2) {
         int size; //number of ants.
         Path ret = null;
@@ -62,7 +36,7 @@ public class AntPathFinder {
             return (new FourDirection[0]);
         } else {
             FourDirection[] order = makeOrder(x1, y1, x2, y2);
-            ants.add(makeAnt(order[0], x1, y1, x2, y2));//<----
+            ants.add(makeAnt(order[0], x1, y1));//<----
         }
         while (!done) {
             size = ants.size();
@@ -135,7 +109,7 @@ public class AntPathFinder {
         return problem;
     }
 
-    private AdamAnt makeAnt(FourDirection direction, int x1, int y1, int x2, int y2) {
+    private AdamAnt makeAnt(FourDirection direction, int x1, int y1) {
         return (new AdamAnt(x1, y1, direction, mygrid, doneGrid));
     }
 
@@ -169,10 +143,6 @@ public class AntPathFinder {
 
         public Path() {
             super();
-        }
-
-        public Path(List<FourDirection> list) {
-            super(list);
         }
 
         public FourDirection[] getArray() {

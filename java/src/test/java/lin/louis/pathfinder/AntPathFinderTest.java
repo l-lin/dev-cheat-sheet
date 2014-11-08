@@ -5,7 +5,6 @@ import game.common.board.MatrixCharBoard;
 import game.common.command.FourDirection;
 import game.common.entities.Point;
 import game.common.pathfinder.AntPathFinder;
-import game.common.pathfinder.BreadthFirstSearch;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -19,17 +18,18 @@ public class AntPathFinderTest {
 
     @Before
     public void setUp() {
-        board = new MatrixCharBoard(WIDTH, HEIGHT, '.');
         walls = new MatrixBooleanBoard(WIDTH, HEIGHT);
-        walls.initBoard(true);
-        walls.set(WIDTH - 1, 1, false);
-        board.set(WIDTH - 1, 1, '#');
-        System.out.println(walls.toString());
     }
 
     @Test
     public void ant() {
-        AntPathFinder pathFinder = new AntPathFinder(200);
+        walls.initBoard(true);
+        walls.set(WIDTH - 1, 1, false);
+        board = new MatrixCharBoard(WIDTH, HEIGHT, '.');
+        board.set(WIDTH - 1, 1, '#');
+        System.out.println(walls.toString());
+
+        AntPathFinder pathFinder = new AntPathFinder();
         FourDirection[] moves = pathFinder.findPath(
                 walls,
                 0, HEIGHT - 1,
@@ -41,34 +41,31 @@ public class AntPathFinderTest {
         System.out.println(board.toString());
     }
 
+    @Test
+    public void ant2() {
+        board = new MatrixCharBoard(WIDTH, HEIGHT, '#');
+        for (int x = 5; x <= 15; x++) {
+            walls.set(x, 6, true);
+            board.set(x, 6, '.');
+        }
+        System.out.println(walls.toString());
+        AntPathFinder pathFinder = new AntPathFinder();
+        FourDirection[] moves = pathFinder.findPath(
+                walls,
+                5, 6,
+                15, 6
+        );
+
+        assertThat(moves).isNotNull();
+        replace(board, moves, new Point(5, 6));
+        System.out.println(board.toString());
+    }
+
     private void replace(MatrixCharBoard board, FourDirection[] moves, Point p) {
         Point currentPoint = p;
         for (FourDirection move : moves) {
             currentPoint = currentPoint.add(move);
             board.set(currentPoint, move.name().charAt(0));
         }
-    }
-
-    private FourDirection[] toFourDirection(int[] path) {
-        FourDirection[] directions = new FourDirection[path.length];
-        for (int i = 0; i < path.length; i++) {
-            switch(path[i]) {
-                case 0:
-                    directions[i] = FourDirection.N;
-                    break;
-                case 1:
-                    directions[i] = FourDirection.E;
-                    break;
-                case 2:
-                    directions[i] = FourDirection.S;
-                    break;
-                case 3:
-                    directions[i] = FourDirection.W;
-                    break;
-                default:
-                    break;
-            }
-        }
-        return directions;
     }
 }
