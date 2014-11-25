@@ -1,6 +1,6 @@
 import java.util.*;
 
-class Player {
+class LabyrinthPlayer {
     private static final boolean DEBUG = true;
 
     private static DistanceBoard distanceBoard;
