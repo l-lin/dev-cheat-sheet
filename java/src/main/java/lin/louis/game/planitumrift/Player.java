@@ -1,6 +1,5 @@
 import java.util.*;
 import java.lang.*;
-import java.util.Map.Entry;
 
 /**
  * Auto-generated code below aims at helping you parse
@@ -35,6 +34,7 @@ class Player {
             NB_SPAWNS = money / Zergs.UNIT_PRICE;
             in.nextLine();
             Map<Integer, Integer> myZoneList = new HashMap<>();
+            Map<Integer, Integer> enemyZoneList = new HashMap<>();
             for (int i = 0; i < zoneCount; i++) {
                 int zId = in.nextInt(); // this zone's ID
                 int ownerId = in.nextInt(); // the player who owns this zone (-1 otherwise)
@@ -46,6 +46,8 @@ class Player {
                 zoneFactory.initZones(zId, ownerId, pods);
                 if (MY_ID == ownerId && pods[MY_ID] > 0) {
                     myZoneList.put(zId, pods[MY_ID]);
+                } else if (ownerId != -1 && pods[ownerId] > 0) {
+                    enemyZoneList.put(zId, pods[ownerId]);
                 }
                 in.nextLine();
             }
@@ -54,8 +56,9 @@ class Player {
                 execute(Command.WAIT.toString());
                 execute(spawnZergsForFirstTime(money));
             } else {
-                execute(orderZergs(myZoneList));
-                execute(spawnZergs(money));
+                Command command = orderZergs(myZoneList);
+                execute(command.toString());
+                execute(spawnZergs(money, enemyZoneList, command));
             }
 
             isFirstRound = false;
@@ -102,57 +105,101 @@ class Player {
         return spawningPool.toString();
     }
 
-    private static String orderZergs(Map<Integer, Integer> myZoneList) {
+    private static Command orderZergs(Map<Integer, Integer> myZoneList) {
         Command command = new Command();
         for (Map.Entry<Integer, Integer> entryZone : myZoneList.entrySet()) {
-            ZergAction zergAction = computeZergAction(entryZone.getKey(), entryZone.getValue());
+            ZergAction zergAction = computeZergAction(entryZone.getKey());
             switch (zergAction) {
+                case ATK:
+                    command.addAll(attack(entryZone.getKey(), entryZone.getValue()));
+                    break;
                 case DEF:
                     command.addAll(defend(entryZone.getKey(), entryZone.getValue()));
                     break;
                 case EXPAND:
                 default:
-                    command.addAll(divideAndConquer(entryZone.getKey(), entryZone.getValue()));
+                    command.addAll(expand(entryZone.getKey(), entryZone.getValue()));
                     break;
             }
         }
-        return command.toString();
+        return command;
+    }
+
+    private static List<Order> attack(int zoneId, int nbZergs) {
+        List<Order> orderList = new ArrayList<>();
+        Zone zone = zoneFactory.get(zoneId);
+        for (Zone neighbourZone : zone.linkedZones) {
+            if (neighbourZone.isEnemyZone() && neighbourZone.isWealthy() && neighbourZone.allZergs() < nbZergs) {
+                int nbZergsToMove = neighbourZone.allZergs() + 1;
+                int nbRemainingZergs = nbZergs - nbZergsToMove;
+                orderList.add(Order.order(nbZergsToMove).goFrom(zoneId).to(neighbourZone.zoneId));
+                if (nbRemainingZergs > 0) {
+                    orderList.addAll(expand(zoneId, nbRemainingZergs));
+                }
+                break;
+            }
+        }
+        return orderList;
     }
 
     private static List<Order> defend(int zoneId, int nbZergs) {
         List<Order> orderList = new ArrayList<>();
-        // TODO: Defend better zones!
-        orderList.add(WaitOrder.orderToWait(zoneId));
+        Zone zone = zoneFactory.get(zoneId);
+        int zoneIdToDefend = zoneId;
+        int mostWealthyZoneMoney = zone.planitumSource;
+        for (Zone neighbourZone : zone.linkedZones) {
+            if (neighbourZone.isMyZone() && neighbourZone.planitumSource > mostWealthyZoneMoney) {
+                zoneIdToDefend = neighbourZone.zoneId;
+            }
+        }
+        if (zoneId != zoneIdToDefend) {
+            orderList.add(Order.order(nbZergs).goFrom(zoneId).to(zoneIdToDefend));
+        }
         return orderList;
     }
 
-    private static ZergAction computeZergAction(int zoneId, int nbZergs) {
+    private static ZergAction computeZergAction(int zoneId) {
         Zone zone = zoneFactory.get(zoneId);
+//        if (zone.isMyZone() && zone.isWealthy() && zone.hasNearbyEnemy()) {
+//            return ZergAction.DEF;
+//        }
         for (Zone neighbourZone : zone.linkedZones) {
-            if (neighbourZone.hasEnemy()) {
-                // TODO: Defend only if there are strategic zone
-                return ZergAction.DEF;
+//            if (neighbourZone.isMyZone() && neighbourZone.isWealthy() && neighbourZone.hasNearbyEnemy()) {
+//                return ZergAction.DEF;
+//            }
+            if (neighbourZone.isEnemyZone() && neighbourZone.isWealthy() && neighbourZone.allZergs() < zone.allZergs()) {
+                return ZergAction.ATK;
             }
         }
         // TODO: Implement atk
         return ZergAction.EXPAND;
     }
 
-    private static List<Order> divideAndConquer(int zoneId, int nbZergs) {
+    private static List<Order> expand(int zoneId, int nbZergs) {
         List<Order> orderList = new ArrayList<>();
         int nbZergsLeft = nbZergs;
         Zone zone = zoneFactory.get(zoneId);
         do {
-            // FIXME: Go random...
-            int index = rand.nextInt(zone.linkedZones.size());
-            Zone targetZone = zone.linkedZones.get(index);
-            orderList.add(Order.order(1).goFrom(zoneId).to(targetZone.zoneId));
+            boolean hasNeutralOrEnemyZoneNearby = false;
+            for (Zone neighbourZone : zone.linkedZones) {
+                if (neighbourZone.isEnemyZone()) {
+                    orderList.add(Order.order(1).goFrom(zoneId).to(neighbourZone.zoneId));
+                    hasNeutralOrEnemyZoneNearby = true;
+                    break;
+                }
+            }
+            if (!hasNeutralOrEnemyZoneNearby) {
+                // FIXME: Go random...
+                int index = rand.nextInt(zone.linkedZones.size());
+                Zone targetZone = zone.linkedZones.get(index);
+                orderList.add(Order.order(1).goFrom(zoneId).to(targetZone.zoneId));
+            }
             nbZergsLeft--;
         } while(nbZergsLeft > 0);
         return orderList;
     }
 
-    private static String spawnZergs(int money) {
+    private static String spawnZergs(int money, Map<Integer, Integer> enemyZoneList, Command command) {
         SpawningPool spawningPool = new SpawningPool(money);
         // Fetch the remaining zone that are not conquered yet
         List<Zone> neutralWealthyZones = new ArrayList<>();
@@ -163,6 +210,7 @@ class Player {
         }
         if (!neutralWealthyZones.isEmpty()) {
             Collections.sort(neutralWealthyZones, Zone.MOST_WEALTHY);
+            // FIXME: Compute what's the best value to spawn zergs
             int nbZergsToSpawn = spawningPool.computeNbSpawns() / 2;
             nbZergsToSpawn = nbZergsToSpawn > neutralWealthyZones.size() ? neutralWealthyZones.size() : nbZergsToSpawn;
             for (int i = 0; i < nbZergsToSpawn; i++) {
@@ -170,6 +218,22 @@ class Player {
             }
         }
         // Defend
+        for (int enemyZoneId : enemyZoneList.keySet()) {
+            Zone enemyZone = zoneFactory.get(enemyZoneId);
+            for (Zone neighbourZone : enemyZone.linkedZones) {
+                if (neighbourZone.isMyZone() && neighbourZone.isWealthy()) {
+                    int nbZergsToSpawn = enemyZone.allZergs();
+                    for (Order order : command) {
+                        if (order.to == neighbourZone.zoneId) {
+                            nbZergsToSpawn -= order.nbZergs;
+                        }
+                    }
+                    spawningPool.add(Zergs.spawn(nbZergsToSpawn).in(neighbourZone.zoneId));
+                }
+            }
+        }
+        // Atk
+        // TODO: Spawn near an enemy
 
         return spawningPool.toString();
     }
@@ -321,20 +385,29 @@ class Player {
             return ownerId == MY_ID;
         }
 
-        public boolean hasEnemy() {
-            return !isMyZone() && !isNeutral() && podsP[ownerId] > 0;
+        public boolean isEnemyZone() {
+            return !isMyZone() && !isNeutral();
         }
 
-        public boolean isConquering() {
-            boolean hasMyZergs = podsP[MY_ID] > 0;
-            boolean hasOtherZergs = false;
-            for (int i = 0; i < 4; i++) {
-                if (i != MY_ID && podsP[i] > 0) {
-                    hasOtherZergs = true;
-                    break;
+        public boolean hasEnemy() {
+            return isEnemyZone() && podsP[ownerId] > 0;
+        }
+
+        public boolean isWealthy() {
+            return planitumSource > 0;
+        }
+
+        public int allZergs() {
+            return podsP[ownerId];
+        }
+
+        public boolean hasNearbyEnemy() {
+            for (Zone neighbourZone : linkedZones) {
+                if (neighbourZone.hasEnemy()) {
+                    return true;
                 }
             }
-            return !isMyZone() && hasMyZergs && !hasOtherZergs;
+            return false;
         }
 
         @Override
@@ -522,12 +595,12 @@ class Player {
     }
 
     public static class Order implements Comparable<Order> {
-        int nbPOD;
+        int nbZergs;
         int from;
         int to;
 
-        private Order(int nbPOD) {
-            this.nbPOD = nbPOD;
+        private Order(int nbZergs) {
+            this.nbZergs = nbZergs;
         }
 
         public static Order order(int nbPOD) {
@@ -546,7 +619,7 @@ class Player {
 
         @Override
         public String toString() {
-            return nbPOD + " " + from + " " + to;
+            return nbZergs + " " + from + " " + to;
         }
 
         @Override
