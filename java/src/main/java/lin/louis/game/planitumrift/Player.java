@@ -1,18 +1,29 @@
-import java.util.*;
-import java.lang.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.LinkedHashMap;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+import java.util.Random;
+import java.util.Scanner;
+import java.util.Set;
+import java.util.TreeMap;
 
 /**
  * Auto-generated code below aims at helping you parse
  * the standard input according to the problem statement.
  */
 class Player {
-    private static final boolean DEBUG = true;
+    private static final boolean DEBUG = false;
     private static World world = new World();
     private static ZoneFactory zoneFactory;
+    private static InfluenceMap influenceMap;
     private static int MY_ID = 0;
     private static Random rand = new Random();
-    private static int NB_SPAWNS = 0;
-    private static boolean isFirstRound = true;
 
     public static void main(String args[]) {
         Scanner in = new Scanner(System.in);
@@ -29,12 +40,13 @@ class Player {
             in.nextLine();
         }
 
+        int nbRound = 1;
         while (true) {
             int money = in.nextInt(); // my available Platinum
-            NB_SPAWNS = money / Zergs.UNIT_PRICE;
             in.nextLine();
             Map<Integer, Integer> myZoneList = new HashMap<>();
-            Map<Integer, Integer> enemyZoneList = new HashMap<>();
+            Map<Integer, Integer> enemyZoneWithZergsList = new HashMap<>();
+            List<Integer> enemyZoneList = new ArrayList<>();
             for (int i = 0; i < zoneCount; i++) {
                 int zId = in.nextInt(); // this zone's ID
                 int ownerId = in.nextInt(); // the player who owns this zone (-1 otherwise)
@@ -46,22 +58,30 @@ class Player {
                 zoneFactory.initZones(zId, ownerId, pods);
                 if (MY_ID == ownerId && pods[MY_ID] > 0) {
                     myZoneList.put(zId, pods[MY_ID]);
-                } else if (ownerId != -1 && pods[ownerId] > 0) {
-                    enemyZoneList.put(zId, pods[ownerId]);
+                } else if (ownerId != -1 && ownerId != MY_ID) {
+                    enemyZoneList.add(zId);
+                    if (pods[ownerId] > 0) {
+                        enemyZoneWithZergsList.put(zId, pods[ownerId]);
+                    }
                 }
                 in.nextLine();
             }
 
-            if (isFirstRound) {
+            influenceMap = InfluenceMap.from(zoneFactory);
+
+            if (playerCount > 2 && nbRound == 1) {
+                execute(Command.WAIT.toString());
+                execute(SpawningPool.NO_SPAWN.toString());
+            } else if (nbRound == 1 && playerCount == 2 || playerCount > 2 && nbRound == 2) {
                 execute(Command.WAIT.toString());
                 execute(spawnZergsForFirstTime(money));
             } else {
                 Command command = orderZergs(myZoneList);
                 execute(command.toString());
-                execute(spawnZergs(money, enemyZoneList, command));
+                execute(spawnZergs(money, enemyZoneWithZergsList, command, enemyZoneList));
             }
 
-            isFirstRound = false;
+            nbRound++;
         }
     }
 
@@ -69,46 +89,40 @@ class Player {
     // FUNCTIONS
     // -----------------------------------------------------------
 
-    public static <T> void debug(T obj) {
+    private static <T> void debug(T obj) {
         if (DEBUG) {
             System.err.println(obj.toString());
         }
     }
 
-    public static void execute(String cmd) {
+    private static void execute(String cmd) {
         System.out.println(cmd);
     }
 
     private static String spawnZergsForFirstTime(int money) {
         SpawningPool spawningPool = new SpawningPool(money);
-        // Find the country with the most money
-        Collections.sort(world, Continent.MOST_WEALTHY);
-        Continent mostWealthyContinent = world.get(0);
-        List<Integer> zoneIdList = new ArrayList<>();
-        for (Zone zone : mostWealthyContinent.wealthyZones) {
-            zoneIdList.add(zone.zoneId);
-        }
-        int i = 0;
-        while (zoneIdList.size() < 5) {
-            List<Zone> neighbourZones = mostWealthyContinent.zoneMap.get(zoneIdList.get(i));
-            for (Zone neighbourZone : neighbourZones) {
-                if (zoneIdList.contains(neighbourZones.get(i).zoneId)) {
-                    zoneIdList.add(neighbourZone.zoneId);
-                    break;
-                }
+
+        Set<Integer> mostInfluencedList = influenceMap.mostInfluencedZones();
+        int i = 1;
+        for (int zoneId : mostInfluencedList) {
+            if (i > 5) {
+                break;
             }
-            i++;
+            Zone zone = zoneFactory.get(zoneId);
+            if (zone.isNeutral()) {
+                spawningPool.add(Zergs.spawn(2).in(zoneId));
+                i++;
+            }
         }
-        for (int zoneId : zoneIdList) {
-            spawningPool.add(Zergs.spawn(2).in(zoneId));
-        }
+
         return spawningPool.toString();
     }
 
     private static Command orderZergs(Map<Integer, Integer> myZoneList) {
         Command command = new Command();
         for (Map.Entry<Integer, Integer> entryZone : myZoneList.entrySet()) {
-            ZergAction zergAction = computeZergAction(entryZone.getKey());
+//            ZergAction zergAction = computeZergAction(entryZone.getKey());
+            ZergAction zergAction = ZergAction.EXPAND;
             switch (zergAction) {
                 case ATK:
                     command.addAll(attack(entryZone.getKey(), entryZone.getValue()));
@@ -146,9 +160,9 @@ class Player {
         List<Order> orderList = new ArrayList<>();
         Zone zone = zoneFactory.get(zoneId);
         int zoneIdToDefend = zoneId;
-        int mostWealthyZoneMoney = zone.planitumSource;
+        int mostWealthyZoneMoney = zone.platinumSource;
         for (Zone neighbourZone : zone.linkedZones) {
-            if (neighbourZone.isMyZone() && neighbourZone.planitumSource > mostWealthyZoneMoney) {
+            if (neighbourZone.isMyZone() && neighbourZone.platinumSource > mostWealthyZoneMoney) {
                 zoneIdToDefend = neighbourZone.zoneId;
             }
         }
@@ -179,32 +193,73 @@ class Player {
         List<Order> orderList = new ArrayList<>();
         int nbZergsLeft = nbZergs;
         Zone zone = zoneFactory.get(zoneId);
-        do {
-            boolean hasNeutralOrEnemyZoneNearby = false;
-            for (Zone neighbourZone : zone.linkedZones) {
-                if (neighbourZone.isEnemyZone()) {
-                    orderList.add(Order.order(1).goFrom(zoneId).to(neighbourZone.zoneId));
-                    hasNeutralOrEnemyZoneNearby = true;
+        NeighbourInfluenceMap neighbourInfluenceMap = NeighbourInfluenceMap.from(zone);
+        if (neighbourInfluenceMap.hasAtLeastOneFavorableNeighbour()) {
+            // Go to most favorable neighbours
+            for (int neighbourZoneId : neighbourInfluenceMap.mostInfluencedZones()) {
+                if (nbZergsLeft == 0) {
                     break;
                 }
+                Zone neighbourZone = zoneFactory.get(neighbourZoneId);
+                if (neighbourZone.hasEnemy()) {
+                    int nbZergToMove = neighbourZone.allZergs();
+                    if (nbZergsLeft > nbZergToMove) {
+                        orderList.add(Order.order(nbZergToMove).goFrom(zoneId).to(neighbourZoneId));
+                        nbZergsLeft -= nbZergToMove;
+                    }
+                } else{
+                    orderList.add(Order.order(1).goFrom(zoneId).to(neighbourZoneId));
+                    nbZergsLeft--;
+                }
             }
-            if (!hasNeutralOrEnemyZoneNearby) {
-                // FIXME: Go random...
+        } else {
+            // Find the closest most favorable neighbours instead of idling
+//            List<Integer> targetZoneId = findClosestFavorableNeighbour(zone, new LinkedList<Integer>(), 0);
+//            if (targetZoneId.size() > 0) {
+//                debug("zoneId = " + zoneId + " - targetZoneId = " + targetZoneId);
+//                orderList.add(Order.order(nbZergsLeft).goFrom(zoneId).to(targetZoneId.get(0)));
+//            }
+            do {
                 int index = rand.nextInt(zone.linkedZones.size());
-                Zone targetZone = zone.linkedZones.get(index);
-                orderList.add(Order.order(1).goFrom(zoneId).to(targetZone.zoneId));
-            }
-            nbZergsLeft--;
-        } while(nbZergsLeft > 0);
+                int targetZoneId = zone.linkedZones.get(index).zoneId;
+                orderList.add(Order.order(1).goFrom(zoneId).to(targetZoneId));
+                nbZergsLeft--;
+            } while (nbZergsLeft > 0);
+        }
         return orderList;
     }
 
-    private static String spawnZergs(int money, Map<Integer, Integer> enemyZoneList, Command command) {
+    private static List<Integer> findClosestFavorableNeighbour(Zone zone, List<Integer> zoneIdList, int iteration) {
+        if (iteration > 10) {
+            return new LinkedList<>();
+        }
+        for (Zone neighbourZone : zone.linkedZones) {
+            if (influenceMap.getInfluenceOf(neighbourZone.zoneId) > 0) {
+                zoneIdList.add(neighbourZone.zoneId);
+                return zoneIdList;
+            }
+        }
+        for (Zone neighbourZone : zone.linkedZones) {
+            if (zoneIdList.contains(neighbourZone.zoneId)) {
+                continue;
+            }
+            List<Integer> newZoneIdList = new LinkedList<>(zoneIdList);
+            newZoneIdList.add(neighbourZone.zoneId);
+            newZoneIdList = findClosestFavorableNeighbour(neighbourZone, newZoneIdList, iteration + 1);
+            if (newZoneIdList.size() > 0) {
+                return newZoneIdList;
+            }
+        }
+        return new LinkedList<>();
+    }
+
+
+    private static String spawnZergs(int money, Map<Integer, Integer> enemyZoneWithZergsList, Command command, List<Integer> enemyZoneList) {
         SpawningPool spawningPool = new SpawningPool(money);
         // Fetch the remaining zone that are not conquered yet
         List<Zone> neutralWealthyZones = new ArrayList<>();
         for (Zone zone : zoneFactory.zoneMap.values()) {
-            if (zone.isNeutral() && zone.planitumSource > 0) {
+            if (zone.isNeutral() && zone.isWealthy()) {
                 neutralWealthyZones.add(zone);
             }
         }
@@ -218,7 +273,7 @@ class Player {
             }
         }
         // Defend
-        for (int enemyZoneId : enemyZoneList.keySet()) {
+        for (int enemyZoneId : enemyZoneWithZergsList.keySet()) {
             Zone enemyZone = zoneFactory.get(enemyZoneId);
             for (Zone neighbourZone : enemyZone.linkedZones) {
                 if (neighbourZone.isMyZone() && neighbourZone.isWealthy()) {
@@ -233,21 +288,48 @@ class Player {
             }
         }
         // Atk
-        // TODO: Spawn near an enemy
+        int nbSpawnsForAtk = spawningPool.computeNbSpawns() / 5;
+        if (nbSpawnsForAtk > 1) {
+            Map<Integer, Integer> map = new HashMap<>();
+            for (Zone zone : zoneFactory.zoneMap.values()) {
+                if (zone.isNeutral() ) {
+                    map.put(zone.zoneId, influenceMap.getInfluenceOf(zone.zoneId));
+                }
+            }
+            InfluenceComparator comparator = new InfluenceComparator(map);
+            Map<Integer, Integer> sortedMap = new TreeMap<>(comparator);
+            sortedMap.putAll(map);
+            for (int zoneId : sortedMap.keySet()) {
+                if (nbSpawnsForAtk == 0) {
+                    break;
+                }
+                spawningPool.add(Zergs.spawn(1).in(zoneId));
+                nbSpawnsForAtk--;
+            }
+            if (nbSpawnsForAtk > 0) {
+                // Spawn near an enemy
+                finishAtk: for (int enemyZoneId : enemyZoneList) {
+                    Zone enemyZone = zoneFactory.get(enemyZoneId);
+                    for (Zone zone : enemyZone.linkedZones) {
+                        if (zone.isMyZone()) {
+                            debug("ATK - " + nbSpawnsForAtk + " in " + zone.zoneId + " - enemyZone " + enemyZone.zoneId);
+                            spawningPool.add(Zergs.spawn(nbSpawnsForAtk).in(zone.zoneId));
+                            break finishAtk;
+                        }
+                    }
+                }
+
+            }
+        }
 
         return spawningPool.toString();
     }
 
     // -----------------------------------------------------------
-    // ALGO
-    // -----------------------------------------------------------
-
-
-    // -----------------------------------------------------------
     // ZONE / CONTINENT / WORLD
     // -----------------------------------------------------------
 
-    public static class World extends ArrayList<Continent> {
+    private static class World extends ArrayList<Continent> {
         public boolean add(int zoneId1, int zoneId2, ZoneFactory zoneFactory) {
             zoneFactory.link(zoneId1, zoneId2);
 
@@ -284,19 +366,9 @@ class Player {
         }
     }
 
-    public static class Continent {
+    private static class Continent {
         Map<Integer, List<Zone>> zoneMap = new LinkedHashMap<>();
         List<Zone> wealthyZones = new ArrayList<>();
-
-        public static final Comparator<Continent> MOST_WEALTHY = new Comparator<Continent>() {
-            @Override
-            public int compare(Continent o1, Continent o2) {
-                if (o1.computeTotalMoney() > o2.computeTotalMoney()) {
-                    return -1;
-                }
-                return o1.computeTotalMoney() == o2.computeTotalMoney() ? 0 : 1;
-            }
-        };
 
         public void add(int zoneId, Zone linkedZone) {
             List<Zone> zoneList = zoneMap.get(zoneId);
@@ -305,7 +377,7 @@ class Player {
             }
             zoneList.add(linkedZone);
             zoneMap.put(zoneId, zoneList);
-            if (!wealthyZones.contains(linkedZone) && linkedZone.planitumSource > 0) {
+            if (!wealthyZones.contains(linkedZone) && linkedZone.platinumSource > 0) {
                 wealthyZones.add(linkedZone);
                 Collections.sort(wealthyZones, Zone.MOST_WEALTHY);
             }
@@ -319,7 +391,7 @@ class Player {
             int money = 0;
             for (List<Zone> zones : zoneMap.values()) {
                 for (Zone zone : zones) {
-                    money += zone.planitumSource;
+                    money += zone.platinumSource;
                 }
             }
             return money;
@@ -339,30 +411,30 @@ class Player {
         }
     }
 
-    public static class Zone {
+    private static class Zone {
         public static Comparator<Zone> MOST_WEALTHY = new Comparator<Zone>() {
             @Override
             public int compare(Zone o1, Zone o2) {
-                if (o1.planitumSource > o2.planitumSource) {
+                if (o1.platinumSource > o2.platinumSource) {
                     return -1;
                 }
-                return o1.planitumSource == o2.planitumSource ? 0 : 1;
+                return o1.platinumSource == o2.platinumSource ? 0 : 1;
             }
         };
         int zoneId;
-        int planitumSource;
+        int platinumSource;
         int ownerId = -1;
         int[] podsP = new int[4];
         List<Zone> linkedZones = new ArrayList<>();
 
-        public Zone(int zoneId, int planitumSource) {
+        public Zone(int zoneId, int platinumSource) {
             this.zoneId = zoneId;
-            this.planitumSource = planitumSource;
+            this.platinumSource = platinumSource;
         }
 
         public Zone(Zone zone) {
             this.zoneId = zone.zoneId;
-            this.planitumSource = zone.planitumSource;
+            this.platinumSource = zone.platinumSource;
             this.ownerId = zone.ownerId;
             this.podsP = Arrays.copyOf(zone.podsP, zone.podsP.length);
         }
@@ -394,7 +466,7 @@ class Player {
         }
 
         public boolean isWealthy() {
-            return planitumSource > 0;
+            return platinumSource > 0;
         }
 
         public int allZergs() {
@@ -412,7 +484,7 @@ class Player {
 
         @Override
         public String toString() {
-            return "zoneId = " + zoneId + " - platinumSource = " + planitumSource;
+            return "zoneId = " + zoneId + " - platinumSource = " + platinumSource;
         }
 
         @Override
@@ -423,7 +495,7 @@ class Player {
             Zone zone = (Zone) o;
 
             if (ownerId != zone.ownerId) return false;
-            if (planitumSource != zone.planitumSource) return false;
+            if (platinumSource != zone.platinumSource) return false;
             if (zoneId != zone.zoneId) return false;
 
             return true;
@@ -432,24 +504,29 @@ class Player {
         @Override
         public int hashCode() {
             int result = zoneId;
-            result = 31 * result + planitumSource;
+            result = 31 * result + platinumSource;
             result = 31 * result + ownerId;
             return result;
         }
     }
 
-    public static class ZoneFactory {
+    private static class ZoneFactory {
         Map<Integer, Zone> zoneMap;
+        List<Integer> wealthyZones;
 
         private ZoneFactory() {
         }
 
         public ZoneFactory(Scanner in, int zoneCount) {
             zoneMap = new HashMap<>(zoneCount);
+            wealthyZones = new ArrayList<>();
             for (int i = 0; i < zoneCount; i++) {
                 int zoneId = in.nextInt(); // this zone's ID (between 0 and zoneCount-1)
                 int platinumSource = in.nextInt(); // the amount of Platinum this zone can provide per game turn
                 zoneMap.put(zoneId, new Zone(zoneId, platinumSource));
+                if (platinumSource > 0) {
+                    wealthyZones.add(zoneId);
+                }
                 in.nextLine();
             }
         }
@@ -494,7 +571,8 @@ class Player {
     // ZERG
     // -----------------------------------------------------------
 
-    public static class SpawningPool extends ArrayList<Zergs> {
+    private static class SpawningPool extends ArrayList<Zergs> {
+        public static SpawningPool NO_SPAWN = new SpawningPool(0);
         int money;
 
         public SpawningPool(int money) {
@@ -531,7 +609,7 @@ class Player {
         }
     }
 
-    public static class Zergs {
+    private static class Zergs {
         static final int UNIT_PRICE = 20;
         int nbZergs;
         int zone;
@@ -551,11 +629,14 @@ class Player {
 
         @Override
         public String toString() {
-            return nbZergs + " " + zone;
+            if (nbZergs > 0) {
+                return nbZergs + " " + zone;
+            }
+            return "";
         }
     }
 
-    public static enum ZergAction {
+    private static enum ZergAction {
         EXPAND, DEF, ATK
     }
 
@@ -563,7 +644,7 @@ class Player {
     // COMMAND
     // -----------------------------------------------------------
 
-    public static class Command extends ArrayList<Order> {
+    private static class Command extends ArrayList<Order> {
         public static final Command WAIT = new Command();
 
         @Override
@@ -579,22 +660,7 @@ class Player {
         }
     }
 
-    public static class WaitOrder extends Order {
-        private WaitOrder(int nbPOD) {
-            super(nbPOD);
-        }
-
-        public static WaitOrder orderToWait(int nbPod) {
-            return new WaitOrder(nbPod);
-        }
-
-        @Override
-        public String toString() {
-            return "";
-        }
-    }
-
-    public static class Order implements Comparable<Order> {
+    private static class Order {
         int nbZergs;
         int from;
         int to;
@@ -621,10 +687,120 @@ class Player {
         public String toString() {
             return nbZergs + " " + from + " " + to;
         }
+    }
+
+    // -----------------------------------------------------------
+    // INFLUENCE
+    // -----------------------------------------------------------
+
+    private static class NeighbourInfluenceMap extends InfluenceMap {
+        Zone zone;
+        public static NeighbourInfluenceMap from(Zone zone) {
+            NeighbourInfluenceMap neighbourInfluenceMap = new NeighbourInfluenceMap();
+            neighbourInfluenceMap.zone = zone;
+
+            for (Zone neighbourZone : zone.linkedZones) {
+                neighbourInfluenceMap.map.put(neighbourZone.zoneId, influenceMap.getInfluenceOf(neighbourZone.zoneId));
+            }
+            InfluenceComparator comparator = new InfluenceComparator(neighbourInfluenceMap.map);
+            neighbourInfluenceMap.sortedMap = new TreeMap<>(comparator);
+            neighbourInfluenceMap.sortedMap.putAll(neighbourInfluenceMap.map);
+            return neighbourInfluenceMap;
+        }
+
+        public boolean hasAtLeastOneFavorableNeighbour() {
+            for (int influence : sortedMap.values()) {
+                if (influence > 0) {
+                    return true;
+                }
+                // Since sortedMap is already sorted, if the first one is not > 0, then there are no favorable neighbour
+                return false;
+            }
+            return false;
+        }
 
         @Override
-        public int compareTo(Order o) {
-            return 0;
+        public String toString() {
+            StringBuilder sb = new StringBuilder();
+            sb.append("zone ").append(zone.zoneId).append(" - ");
+            for (Map.Entry<Integer, Integer> entry : sortedMap.entrySet()) {
+                sb.append("(").append(entry.getKey()).append(",").append(entry.getValue()).append(")");
+            }
+            return sb.toString();
+        }
+    }
+
+    private static class InfluenceMap {
+        Map<Integer, Integer> map = new HashMap<>();
+        Map<Integer, Integer> sortedMap;
+        private static final int[] COEFF = new int[]{3, 2, 1};
+        private static final int COEFF_MY_ZONE = 100;
+
+        public static InfluenceMap from(ZoneFactory zoneFactory) {
+            InfluenceMap influenceMap = new InfluenceMap();
+            for (int zoneId : zoneFactory.zoneMap.keySet()) {
+                Zone zone = zoneFactory.get(zoneId);
+                init(zone, zone.isMyZone(), zone.platinumSource, influenceMap, 0);
+            }
+            InfluenceComparator comparator = new InfluenceComparator(influenceMap.map);
+            influenceMap.sortedMap = new TreeMap<>(comparator);
+            influenceMap.sortedMap.putAll(influenceMap.map);
+            return influenceMap;
+        }
+
+        public Set<Integer> mostInfluencedZones() {
+            return sortedMap.keySet();
+        }
+
+        public Integer getInfluenceOf(int zoneId) {
+            return map.get(zoneId);
+        }
+
+        private static void init(Zone zone, boolean isMyZone, int platinumSource, InfluenceMap influenceMap, int depth) {
+            if (depth >= COEFF.length) {
+                return;
+            }
+            Integer influence = influenceMap.map.get(zone.zoneId);
+            if (influence == null) {
+                influence = 0;
+            }
+            int value = platinumSource + 1;
+            value = isMyZone ? value / 3 : value;
+            influence += COEFF[depth] * value;
+            if (zone.isMyZone()) {
+                influence -= COEFF_MY_ZONE;
+            }
+            influenceMap.map.put(zone.zoneId, influence);
+            for (Zone neighbourZone : zone.linkedZones) {
+                init(neighbourZone, isMyZone, platinumSource, influenceMap, depth + 1);
+            }
+        }
+
+        @Override
+        public String toString() {
+            StringBuilder sb = new StringBuilder();
+            for (Map.Entry<Integer, Integer> entry : sortedMap.entrySet()) {
+                sb.append("zoneId = ").append(entry.getKey())
+                        .append(" - influence = ").append(entry.getValue())
+                        .append("\n");
+            }
+            return sb.toString();
+        }
+    }
+
+    private static class InfluenceComparator implements Comparator<Integer> {
+        Map<Integer, Integer> map;
+
+        public InfluenceComparator(Map<Integer, Integer> map) {
+            this.map = map;
+        }
+
+        @Override
+        public int compare(Integer o1, Integer o2) {
+            if (map.get(o1) > map.get(o2)) {
+                return -1;
+            }
+            return 1;
         }
     }
 }
