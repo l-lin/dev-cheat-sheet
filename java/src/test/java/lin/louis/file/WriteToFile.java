@@ -10,6 +10,7 @@ import java.nio.file.StandardOpenOption;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.junit.Ignore;
 import org.junit.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -21,6 +22,7 @@ import static org.assertj.core.api.Assertions.assertThat;
  */
 public class WriteToFile {
     @Test
+    @Ignore
     public void writeToFile() throws IOException {
         Path path = Paths.get("/home/llin/tmp", "foobar.txt");
         List<String> content = new ArrayList<>();
