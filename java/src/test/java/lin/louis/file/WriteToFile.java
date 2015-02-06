@@ -1,7 +1,9 @@
 package lin.louis.file;
 
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.OutputStream;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -32,5 +34,13 @@ public class WriteToFile {
 
         File file = new File("/home/llin/tmp/foobar.txt");
         assertThat(file.exists()).isTrue();
+    }
+
+    @Test
+    @Ignore
+    public void writeUsingFileOutputStream() throws IOException {
+        try (OutputStream out = new FileOutputStream("/home/llin/tmp/foobar.txt")) {
+            out.write("foobar".getBytes());
+        }
     }
 }

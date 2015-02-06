@@ -14,7 +14,7 @@ import org.junit.Test;
  */
 public class Streams {
     @Test
-    public void testByteOutpustream() throws IOException {
+    public void usingByteStreams() throws IOException {
         try (ByteArrayOutputStream outputStream = new ByteArrayOutputStream()) {
             outputStream.write("foobar".getBytes());
 
