@@ -15,7 +15,7 @@ import org.junit.Test;
  * @created 10/08/15 11:06
  */
 public class TimeoutWithExecutorServiceAndFuture {
-    @Test
+    @Test(expected = TimeoutException.class)
     public void timeoutUsingExecutorServiceAndFuture() throws ExecutionException, InterruptedException, TimeoutException {
         ExecutorService executorService = Executors.newSingleThreadExecutor();
         Future<?> task = executorService.submit(() -> {
