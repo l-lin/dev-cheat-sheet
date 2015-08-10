@@ -7,7 +7,7 @@ public class CompGATest {
     public void geneticAlgo() {
 //        GeneticAlgo.proceed(200);
         CompPopulation population = new CompPopulation(20, 5, 20);
-        CompChromosome chromosome = population.generation(5000);
+        CompChromosome chromosome = population.generation(1000);
         System.out.println("Found GOAL ----------------");
         System.out.println("Generations: " + population.getGenerationNumber());
         System.out.println(chromosome.toString());
