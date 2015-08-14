@@ -36,8 +36,8 @@ keytool -import -keystore cacerts.jks -storepass cacertspassword -alias foobarCA
 keytool -genkey -v -alias foobar -keyalg RSA -validity 3650 -keystore foobar.jks -dname "CN=foobar.local.fr, OU=, O=Foobar, L=Paris, ST=IDF, C=FR" -storepass foobarpwd -keypass foobarpwd
 # Then, generate the CSR to sign:
 keytool -certreq -alias foobar -file foobar.csr -keystore foobar.jks -storepass foobarpwd
-# Sign the certificate to the CA:
-openssl ca -batch -keyfile foobarCA.key -cert foobarCA.crt -policy policy_anything -out foobar.crt -infiles foobar.csr
+# Sign the certificate to the CA. startdate and enddate format: YYMMDDHHMMSSZ (the same as an ASN1 UTCTime structure)
+openssl ca -batch -startdate 150813080000Z -enddate 250813090000Z -keyfile foobarCA.key -cert foobarCA.crt -policy policy_anything -out foobar.crt -infiles foobar.csr
 # Add the root certificate to the keystores
 keytool -importcert -alias foobarCA -file foobarCA.crt -keystore foobar.jks -storepass foobarpwd -noprompt
 # Add signed certificate to the keystores
