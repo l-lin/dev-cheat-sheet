@@ -19,6 +19,7 @@ This file will also available in other languages:
 
 FILE SPACING:
 
+```bash
  # double space a file
  sed G
 
@@ -40,9 +41,11 @@ FILE SPACING:
 
  # insert a blank line above and below every line which matches "regex"
  sed '/regex/{x;p;x;G;}'
+```
 
 NUMBERING:
 
+```bash
  # number each line of a file (simple left alignment). Using a tab (see
  # note on '\t' at end of file) instead of space will preserve margins.
  sed = filename | sed 'N;s/\n/\t/'
@@ -55,9 +58,11 @@ NUMBERING:
 
  # count lines (emulates "wc -l")
  sed -n '$='
+```
 
 TEXT CONVERSION AND SUBSTITUTION:
 
+```bash
  # IN UNIX ENVIRONMENT: convert DOS newlines (CR/LF) to Unix format.
  sed 's/.$//'               # assumes that all lines end with CR/LF
  sed 's/^M$//'              # in bash/tcsh, press Ctrl-V then Ctrl-M
@@ -151,9 +156,11 @@ TEXT CONVERSION AND SUBSTITUTION:
  # add a blank line every 5 lines (after lines 5, 10, 15, 20, etc.)
  gsed '0~5G'                  # GNU sed only
  sed 'n;n;n;n;G;'             # other seds
+```
 
 SELECTIVE PRINTING OF CERTAIN LINES:
 
+```bash
  # print first 10 lines of file (emulates behavior of "head")
  sed 10q
 
@@ -241,9 +248,11 @@ SELECTIVE PRINTING OF CERTAIN LINES:
 
  # print section of file between two regular expressions (inclusive)
  sed -n '/Iowa/,/Montana/p'             # case sensitive
+```
 
 SELECTIVE DELETION OF CERTAIN LINES:
 
+```bash
  # print all of file EXCEPT section between 2 regular expressions
  sed '/Iowa/,/Montana/d'
 
@@ -299,9 +308,11 @@ SELECTIVE DELETION OF CERTAIN LINES:
 
  # delete the last line of each paragraph
  sed -n '/^$/{p;h;};/./{x;/./p;}'
+```
 
 SPECIAL APPLICATIONS:
 
+```bash
  # remove nroff overstrikes (char, backspace) from man pages. The 'echo'
  # command may need an -e switch if you use Unix System V or bash shell.
  sed "s/.`echo \\\b`//g"    # double quotes required for Unix environment
@@ -351,6 +362,7 @@ SPECIAL APPLICATIONS:
  # (under DOS: the "dir /b" switch returns bare filenames in all caps).
  echo @echo off >zipup.bat
  dir /b *.txt | sed "s/^\(.*\)\.TXT/pkzip -mo \1 \1.TXT/" >>zipup.bat
+```
 
 TYPICAL USE: Sed takes one or more editing commands and applies all of
 them, in sequence, to each line of input. After all the commands have
@@ -361,9 +373,11 @@ device (i.e, the console, normally this will be piped input). One or
 more filenames can be appended to the command line if the input does
 not come from stdin. Output is sent to stdout (the screen). Thus:
 
+```bash
  cat filename | sed '10q'        # uses piped input
  sed '10q' filename              # same effect, avoids a useless "cat"
  sed '10q' filename > newfile    # redirects output to disk
+```
 
 For additional syntax instructions, including the way to apply editing
 commands from a disk file instead of the command line, consult "sed &
@@ -405,12 +419,16 @@ which will be portable to most users of sed, even though the popular
 GNU versions of sed allow a more succinct syntax. When the reader sees
 a fairly long command such as this:
 
+```bash
    sed -e '/AAA/b' -e '/BBB/b' -e '/CCC/b' -e d
+```
 
 it is heartening to know that GNU sed will let you reduce it to:
 
+```bash
    sed '/AAA/b;/BBB/b;/CCC/b;d'      # or even
    sed '/AAA\|BBB\|CCC/b;d'
+```
 
 In addition, remember that while many versions of sed accept a command
 like "/one/ s/RE1/RE2/", some do NOT allow "/one/! s/RE1/RE2/", which
@@ -421,16 +439,20 @@ large input files or slow processors or hard disks), substitution will
 be executed more quickly if the "find" expression is specified before
 giving the "s/.../.../" instruction. Thus:
 
+```bash
    sed 's/foo/bar/g' filename         # standard replace command
    sed '/foo/ s/foo/bar/g' filename   # executes more quickly
    sed '/foo/ s//bar/g' filename      # shorthand sed syntax
+```
 
 On line selection or deletion in which you only need to output lines
 from the first part of the file, a "quit" command (q) in the script
 will drastically reduce processing time for large files. Thus:
 
+```bash
    sed -n '45,50p' filename           # print line nos. 45-50 of a file
    sed -n '51q;45,50p' filename       # same, but executes much faster
+```
 
 If you have any additional scripts to contribute or if you find errors
 in this document, please send e-mail to the compiler. Indicate the
@@ -439,6 +461,7 @@ the nature of the problem. To qualify as a one-liner, the command line
 must be 65 characters or less. Various scripts in this file have been
 written or contributed by:
 
+```text
  Al Aab                   # founder of "seders" list
  Edgar Allen              # various
  Yiorgos Adamopoulos      # various
@@ -448,4 +471,5 @@ written or contributed by:
  Ken Pizzini              # author of GNU sed v3.02
  S.G. Ravenhall           # great de-html script
  Greg Ubben               # many contributions & much help
+```
 -------------------------------------------------------------------------
