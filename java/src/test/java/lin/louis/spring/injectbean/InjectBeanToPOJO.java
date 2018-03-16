@@ -1,9 +1,9 @@
 package lin.louis.spring.injectbean;
 
-import javax.inject.Inject;
-
+import lin.louis.config.TestConfig;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
@@ -16,9 +16,9 @@ import static org.assertj.core.api.Assertions.assertThat;
  * @created 22/05/14 09:33
  */
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = {"classpath:spring-config-test.xml"})
+@ContextConfiguration(classes = TestConfig.class)
 public class InjectBeanToPOJO {
-    @Inject
+    @Autowired
     private AutowiredAnnotationBeanPostProcessor annotationBeanPostProcessor;
 
     @Test

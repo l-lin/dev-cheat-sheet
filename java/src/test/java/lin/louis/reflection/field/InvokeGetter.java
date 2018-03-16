@@ -2,7 +2,6 @@ package lin.louis.reflection.field;
 
 import java.lang.reflect.InvocationTargetException;
 
-import lombok.Data;
 import org.apache.commons.beanutils.PropertyUtils;
 import org.junit.Test;
 
@@ -22,8 +21,15 @@ public class InvokeGetter {
         assertThat(id).isEqualTo(123);
     }
 
-    @Data
     public class Foo {
         private Integer id;
+
+        public Integer getId() {
+            return id;
+        }
+
+        public void setId(Integer id) {
+            this.id = id;
+        }
     }
 }

@@ -1,10 +1,10 @@
 package lin.louis.jsr303;
 
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 
 import lombok.Data;
 import lombok.ToString;
-import org.hibernate.validator.constraints.NotBlank;
 
 /**
  * @author llin

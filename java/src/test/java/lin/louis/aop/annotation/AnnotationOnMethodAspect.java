@@ -37,7 +37,6 @@ public class AnnotationOnMethodAspect {
      *
      * @param joinPoint the join point
      * @return the object
-     * @throws Throwable the throwable
      */
     @Around("methodToTrack()")
     public Object track(final ProceedingJoinPoint joinPoint) throws Throwable {
@@ -61,9 +60,8 @@ public class AnnotationOnMethodAspect {
      *
      * @param joinPoint the join point
      * @return the method
-     * @throws Throwable the throwable
      */
-    private Method retrieveTargetMethodFrom(ProceedingJoinPoint joinPoint) throws Throwable {
+    private Method retrieveTargetMethodFrom(ProceedingJoinPoint joinPoint) {
         MethodSignature signature = (MethodSignature) joinPoint.getSignature();
         Method method = checkNotNull(signature.getMethod(), "Could not find the tracked method!");
         // Do not fetch the method of the interface
@@ -72,7 +70,7 @@ public class AnnotationOnMethodAspect {
                 method = joinPoint.getTarget().getClass().getDeclaredMethod(joinPoint.getSignature().getName(),
                         method.getParameterTypes());
             } catch (final SecurityException | NoSuchMethodException e) {
-                throw Throwables.propagate(e);
+                throw new RuntimeException(e);
             }
         }
         return method;

@@ -2,8 +2,6 @@ package lin.louis.aop.method;
 
 import java.lang.reflect.Method;
 
-import com.google.common.base.Throwables;
-import lin.louis.aop.annotation.AnnotationOnMethod;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
@@ -31,7 +29,8 @@ public class MethodAspect {
      * Method to track.
      */
     @Pointcut("execution(* lin.louis.aop.mock.FooService.foo(..))")
-    public void methodToTrack() {}
+    public void methodToTrack() {
+    }
 
     /**
      * Track object.
@@ -58,9 +57,8 @@ public class MethodAspect {
      *
      * @param joinPoint the join point
      * @return the method
-     * @throws Throwable the throwable
      */
-    private Method retrieveTargetMethodFrom(ProceedingJoinPoint joinPoint) throws Throwable {
+    private Method retrieveTargetMethodFrom(ProceedingJoinPoint joinPoint) {
         MethodSignature signature = (MethodSignature) joinPoint.getSignature();
         Method method = checkNotNull(signature.getMethod(), "Could not find the tracked method!");
         // Do not fetch the method of the interface
@@ -69,7 +67,7 @@ public class MethodAspect {
                 method = joinPoint.getTarget().getClass().getDeclaredMethod(joinPoint.getSignature().getName(),
                         method.getParameterTypes());
             } catch (final SecurityException | NoSuchMethodException e) {
-                throw Throwables.propagate(e);
+                throw new RuntimeException(e);
             }
         }
         return method;

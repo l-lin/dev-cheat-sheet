@@ -1,10 +1,9 @@
 package lin.louis.aop.proxifiedtarget;
 
-import javax.inject.Inject;
 import java.lang.reflect.Field;
 
-import lin.louis.aop.mock.FooService;
 import lin.louis.aop.mock.impl.FooServiceImpl;
+import lin.louis.config.TestConfig;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.test.context.ContextConfiguration;
@@ -19,7 +18,7 @@ import static org.assertj.core.api.Assertions.assertThat;
  * @created 22/05/14 10:38
  */
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = {"classpath:spring-config-test.xml"})
+@ContextConfiguration(classes = TestConfig.class)
 public class GetAopProxyfiedTargetField {
     @Test
     public void getTargetField() throws NoSuchFieldException {

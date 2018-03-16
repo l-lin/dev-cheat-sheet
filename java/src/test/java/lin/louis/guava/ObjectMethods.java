@@ -2,7 +2,6 @@ package lin.louis.guava;
 
 import java.util.Arrays;
 
-import com.google.common.base.Objects;
 import com.google.common.collect.ComparisonChain;
 import lombok.Data;
 import org.assertj.core.data.Index;
@@ -16,12 +15,6 @@ import static org.assertj.core.api.Assertions.assertThat;
  * @created 31/10/14 10:39
  */
 public class ObjectMethods {
-    @Test
-    public void toStringHelper() {
-        Person person = Person.of("foo", 10);
-        assertThat(person.toString()).isEqualTo("Person{firstName=foo, age=10}");
-    }
-
     @Test
     public void comparisonChain() {
         Person foo = Person.of("foo", 10);
@@ -40,14 +33,6 @@ public class ObjectMethods {
     private static class Person implements Comparable<Person> {
         private final String firstName;
         private final int age;
-
-        @Override
-        public String toString() {
-            return Objects.toStringHelper(this)
-                    .add("firstName", firstName)
-                    .add("age", age)
-                    .toString();
-        }
 
         @Override
         public int compareTo(Person that) {

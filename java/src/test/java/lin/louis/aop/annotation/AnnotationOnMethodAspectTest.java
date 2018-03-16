@@ -1,11 +1,10 @@
 package lin.louis.aop.annotation;
 
-import javax.inject.Inject;
-
 import lin.louis.aop.mock.FooService;
+import lin.louis.config.TestConfig;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.InjectMocks;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
@@ -14,9 +13,9 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
  * @created 20/05/14 10:32
  */
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = {"classpath:spring-config-test.xml"})
+@ContextConfiguration(classes = TestConfig.class)
 public class AnnotationOnMethodAspectTest {
-    @Inject
+    @Autowired
     private FooService fooService;
 
     @Test

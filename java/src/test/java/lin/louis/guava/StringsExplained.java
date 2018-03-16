@@ -3,7 +3,6 @@ package lin.louis.guava;
 import java.util.List;
 
 import com.google.common.base.CaseFormat;
-import com.google.common.base.CharMatcher;
 import com.google.common.base.Joiner;
 import com.google.common.base.Splitter;
 import org.assertj.core.data.Index;
@@ -32,15 +31,6 @@ public class StringsExplained {
                 .contains("foo", Index.atIndex(0))
                 .contains("bar", Index.atIndex(1))
                 .contains("foo bar", Index.atIndex(2));
-    }
-
-    @Test
-    public void charMatcher() {
-        String noDigits = CharMatcher.JAVA_DIGIT.replaceFrom("foobar123moliku", "*");
-        assertThat(noDigits).isEqualTo("foobar***moliku");
-
-        String lowerAndDigit = CharMatcher.JAVA_DIGIT.or(CharMatcher.JAVA_LOWER_CASE).retainFrom("FooBar123Moliku");
-        assertThat(lowerAndDigit).isEqualTo("ooar123oliku");
     }
 
     @Test
