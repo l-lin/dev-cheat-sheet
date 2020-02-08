@@ -13,7 +13,7 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
         <spring.version>4.0.3.RELEASE</spring.version>
-        <spring.security.version>3.2.4.RELEASE</spring.security.version>
+        <spring.security.version>5.2.2.RELEASE</spring.security.version>
         <jdk.version>1.7</jdk.version>
         <maven.war.plugin.version>2.4</maven.war.plugin.version>
         <jackson-mapper-asl.version>1.9.12</jackson-mapper-asl.version>
