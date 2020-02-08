@@ -7,4 +7,4 @@ then
     exit -1
 fi
 
-grep -Ri $1 *
+grep -Ri "$1" *
