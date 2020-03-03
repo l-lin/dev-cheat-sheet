@@ -51,7 +51,7 @@ main() {
   local name=
   local verbose=false
   # Flags in bash tutorial here: /usr/share/doc/util-linux/examples/getopt-parse.bash
-  TEMP=$(getopt -o 'hn:v' --long 'help,name:,v' -n 'script-template.sh' -- "$@")
+  TEMP=$(getopt -o 'hn:v' --long 'help,name:,v' -n "${0##*/}" -- "$@")
   eval set -- "$TEMP"
   unset TEMP
   while true; do
