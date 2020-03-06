@@ -1,18 +1,13 @@
 package lin.louis.array;
 
-import lombok.Data;
-import org.assertj.core.data.Index;
-import org.junit.Test;
+import static org.assertj.core.api.Assertions.assertThat;
 
 import java.util.Arrays;
 import java.util.Comparator;
 
-import static org.assertj.core.api.Assertions.assertThat;
+import org.assertj.core.data.Index;
+import org.junit.Test;
 
-/**
- * @author llin
- * @created 10/05/14.
- */
 public class SortArray {
 
     @Test
@@ -23,15 +18,12 @@ public class SortArray {
         Person foobar = new Person("Foobar", 5);
         Person[] persons = new Person[]{foo, moliku, bar, foobar};
 
-        Comparator<Person> comparator = new Comparator<Person>() {
-            @Override
-            public int compare(Person person1, Person person2) {
-                if (person1.getAge() - person2.getAge() == 0) {
-                    return person1.getName().compareTo(person2.getName());
-                }
-                return person1.getAge() - person2.getAge();
-            }
-        };
+        Comparator<Person> comparator = (person1, person2) -> {
+			if (person1.getAge() - person2.getAge() == 0) {
+				return person1.getName().compareTo(person2.getName());
+			}
+			return person1.getAge() - person2.getAge();
+		};
 
         Arrays.sort(persons, comparator);
 
@@ -41,14 +33,21 @@ public class SortArray {
                 .contains(moliku, Index.atIndex(3));
     }
 
-    @Data
     private class Person {
-        private String name;
-        private int age;
+        private final String name;
+        private final int age;
 
         public Person(String name, int age) {
             this.name = name;
             this.age = age;
         }
-    }
+
+		private String getName() {
+			return name;
+		}
+
+		private int getAge() {
+			return age;
+		}
+	}
 }

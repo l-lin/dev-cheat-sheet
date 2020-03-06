@@ -1,20 +1,15 @@
 package lin.louis.collection;
 
-import lombok.Data;
-import org.junit.Before;
-import org.junit.Ignore;
-import org.junit.Test;
-
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
-/**
- * @author llin
- * @created 14/05/14.
- */
+import org.junit.Before;
+import org.junit.Ignore;
+import org.junit.Test;
+
 public class ArrayListOrLinkedList {
     private static final int MAX_INTERATION = 1000000;
 
@@ -141,9 +136,16 @@ public class ArrayListOrLinkedList {
         System.out.println("The fastest is: " + fasterList);
     }
 
-    @Data
-    public class Foo implements Serializable {
+    public static class Foo implements Serializable {
         private static final long serialVersionUID = -7103199952150233156L;
         private Integer id;
-    }
+
+		public Integer getId() {
+			return id;
+		}
+
+		public void setId(Integer id) {
+			this.id = id;
+		}
+	}
 }

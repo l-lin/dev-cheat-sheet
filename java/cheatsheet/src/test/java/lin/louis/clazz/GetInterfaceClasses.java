@@ -1,18 +1,12 @@
 package lin.louis.clazz;
 
-import javax.annotation.Nullable;
+import static org.assertj.core.api.Assertions.assertThat;
+
 import java.util.List;
 
 import org.apache.commons.lang3.ClassUtils;
 import org.junit.Test;
 
-import static com.google.common.base.Preconditions.checkArgument;
-import static org.assertj.core.api.Assertions.assertThat;
-
-/**
- * @author llin
- * @created 14/05/14 16:31
- */
 public class GetInterfaceClasses {
 
     @Test
@@ -30,22 +24,21 @@ public class GetInterfaceClasses {
      * @param clazz the clazz
      * @return the interface class
      */
-    public static Class<?>[] getInterfaceClasses(@Nullable Class<?> clazz) {
+    public static Class<?>[] getInterfaceClasses(Class<?> clazz) {
         if (clazz == null) {
             return null;
         }
         List<Class<?>> classList = ClassUtils.getAllInterfaces(clazz);
-        checkArgument(!classList.isEmpty(), "Could not find the interfaces for " + clazz);
-        return classList.toArray(new Class[classList.size()]);
+        return classList.toArray(new Class[0]);
     }
 
     private interface Foo {}
 
     private interface Bar {}
 
-    private class FooImpl implements Foo {}
+    private static class FooImpl implements Foo {}
 
-    private class FooBarImpl implements Foo, Bar {}
+    private static class FooBarImpl implements Foo, Bar {}
 
-    private class NestedFooBarImpl extends FooImpl implements Bar {}
+    private static class NestedFooBarImpl extends FooImpl implements Bar {}
 }

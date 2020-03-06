@@ -7,9 +7,6 @@ import java.net.URLConnection;
 
 /**
  * This will define a new protocol: the "lin:" protocol!!!
- *
- * @author llin
- * @created 12/02/15 10:06
  */
 public class LinConnection extends URLConnection {
     /**
@@ -27,18 +24,12 @@ public class LinConnection extends URLConnection {
         System.out.println("connect()");
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public Object getContent() {
         System.out.println("getContent()");
         return null;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public InputStream getInputStream() throws IOException {
         System.out.println("getInputStream()");

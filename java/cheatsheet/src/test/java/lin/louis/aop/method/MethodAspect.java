@@ -12,8 +12,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 
-import static com.google.common.base.Preconditions.checkNotNull;
-
 /**
  * @author Oodrive
  * @author llin
@@ -60,7 +58,7 @@ public class MethodAspect {
      */
     private Method retrieveTargetMethodFrom(ProceedingJoinPoint joinPoint) {
         MethodSignature signature = (MethodSignature) joinPoint.getSignature();
-        Method method = checkNotNull(signature.getMethod(), "Could not find the tracked method!");
+        Method method = signature.getMethod();
         // Do not fetch the method of the interface
         if (method.getDeclaringClass().isInterface()) {
             try {

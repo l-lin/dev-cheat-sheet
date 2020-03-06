@@ -1,54 +1,37 @@
 package lin.louis.reflection.field;
 
-import javax.annotation.Nullable;
-import java.lang.annotation.Annotation;
-import java.lang.reflect.Field;
-import java.util.List;
-
-import com.google.common.base.Optional;
-import com.google.common.collect.Lists;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import org.junit.Test;
-
-import static com.google.common.base.Optional.fromNullable;
-import static com.google.common.base.Preconditions.checkNotNull;
 import static org.assertj.core.api.Assertions.assertThat;
 
-/**
- * @author llin
- * @created 14/05/14 16:08
- */
+import java.lang.annotation.Annotation;
+import java.lang.reflect.Field;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
+
+import org.junit.Test;
+
+
 public class GetFieldWithGivenAnnotation {
 
     @Test
     public void getFieldsWithGivenAnnotation() {
         // Search on parent class
-        List<Field> fieldList = getFields(Foobar.class, Deprecated.class, Lists.<Field>newArrayList());
+        List<Field> fieldList = getFields(Foobar.class, Deprecated.class, new ArrayList<>());
         assertThat(fieldList).isNotEmpty().hasSize(2);
         for (Field field : fieldList) {
             assertThat(field.getType()).isIn(String.class, Integer.class);
         }
 
         // Search on child class
-        fieldList = getFields(FoobarChild.class, Deprecated.class, Lists.<Field>newArrayList());
+        fieldList = getFields(FoobarChild.class, Deprecated.class, new ArrayList<>());
         assertThat(fieldList).isNotEmpty().hasSize(2);
         for (Field field : fieldList) {
             assertThat(field.getType()).isIn(String.class, Integer.class);
         }
     }
 
-    /**
-     * Gets fields.
-     *
-     * @param clazz           the clazz
-     * @param annotationClass the annotation class
-     * @param fieldList       the field list
-     * @return the fields
-     */
-    public static List<Field> getFields(@Nullable Class<?> clazz, Class<? extends Annotation> annotationClass, List<Field> fieldList) {
-        checkNotNull(annotationClass, "The annotation class must be set");
-
+    public static List<Field> getFields(Class<?> clazz, Class<? extends Annotation> annotationClass, List<Field> fieldList) {
         if (clazz != null) {
             Field[] fields = clazz.getDeclaredFields();
             if (fields != null && fields.length > 0) {
@@ -64,15 +47,8 @@ public class GetFieldWithGivenAnnotation {
         return fieldList;
     }
 
-    /**
-     * Check if the given field has the given annotation.
-     *
-     * @param field           the field
-     * @param annotationClass the annotation class
-     * @return the boolean
-     */
     private static boolean hasAnnotation(Field field, Class<? extends Annotation> annotationClass) {
-        Optional<Annotation[]> annotations = fromNullable(field.getDeclaredAnnotations());
+        Optional<Annotation[]> annotations = Optional.ofNullable(field.getDeclaredAnnotations());
         if (annotations.isPresent() && annotations.get().length > 0) {
             for (Annotation annotation : annotations.get()) {
                 if (annotationClass.equals(annotation.annotationType())) {
@@ -83,19 +59,72 @@ public class GetFieldWithGivenAnnotation {
         return false;
     }
 
-    @Data
     private class Foobar {
         @Deprecated
         private String foobarString;
         @Deprecated
         private Integer foobarInt;
         private Boolean foobarBoolean;
-    }
 
-    @EqualsAndHashCode(callSuper = false)
-    @Data
+		private String getFoobarString() {
+			return foobarString;
+		}
+
+		private void setFoobarString(String foobarString) {
+			this.foobarString = foobarString;
+		}
+
+		private Integer getFoobarInt() {
+			return foobarInt;
+		}
+
+		private void setFoobarInt(Integer foobarInt) {
+			this.foobarInt = foobarInt;
+		}
+
+		private Boolean getFoobarBoolean() {
+			return foobarBoolean;
+		}
+
+		private void setFoobarBoolean(Boolean foobarBoolean) {
+			this.foobarBoolean = foobarBoolean;
+		}
+	}
+
     private class FoobarChild extends Foobar {
         private Long foobarLong;
         private Double foobarDouble;
-    }
+
+		private Long getFoobarLong() {
+			return foobarLong;
+		}
+
+		private void setFoobarLong(Long foobarLong) {
+			this.foobarLong = foobarLong;
+		}
+
+		private Double getFoobarDouble() {
+			return foobarDouble;
+		}
+
+		private void setFoobarDouble(Double foobarDouble) {
+			this.foobarDouble = foobarDouble;
+		}
+
+		@Override
+		public boolean equals(Object o) {
+			if (this == o)
+				return true;
+			if (o == null || getClass() != o.getClass())
+				return false;
+			FoobarChild that = (FoobarChild) o;
+			return Objects.equals(foobarLong, that.foobarLong) &&
+					Objects.equals(foobarDouble, that.foobarDouble);
+		}
+
+		@Override
+		public int hashCode() {
+			return Objects.hash(foobarLong, foobarDouble);
+		}
+	}
 }

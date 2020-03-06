@@ -1,17 +1,13 @@
 package lin.louis.array;
 
-import org.junit.Test;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.data.Index.atIndex;
 
 import java.util.Arrays;
 import java.util.Collections;
 
-import static org.assertj.core.api.Assertions.*;
-import static org.assertj.core.data.Index.atIndex;
+import org.junit.Test;
 
-/**
- * @author llin
- * @created 11/05/14.
- */
 public class ReverseArray {
     @Test
     public void reverseOrderArray() {

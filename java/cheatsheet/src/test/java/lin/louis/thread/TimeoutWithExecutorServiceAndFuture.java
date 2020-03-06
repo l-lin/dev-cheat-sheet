@@ -9,11 +9,6 @@ import java.util.concurrent.TimeoutException;
 
 import org.junit.Test;
 
-/**
- * @author Oodrive
- * @author llin
- * @created 10/08/15 11:06
- */
 public class TimeoutWithExecutorServiceAndFuture {
     @Test(expected = TimeoutException.class)
     public void timeoutUsingExecutorServiceAndFuture() throws ExecutionException, InterruptedException, TimeoutException {

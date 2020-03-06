@@ -1,13 +1,9 @@
 package lin.louis.exercice.duplicatesegment;
 
-import org.junit.Test;
-
 import static org.assertj.core.api.Assertions.assertThat;
 
-/**
- * @author llin
- * @created 14/05/14.
- */
+import org.junit.Test;
+
 public class DuplicateSegmentTest {
     @Test
     public void testHasDuplicateSegment() {

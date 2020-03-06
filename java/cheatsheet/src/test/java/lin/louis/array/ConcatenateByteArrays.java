@@ -5,11 +5,6 @@ import java.io.IOException;
 
 import org.junit.Test;
 
-/**
- * @author Oodrive
- * @author llin
- * @created 24/09/15 16:54
- */
 public class ConcatenateByteArrays {
     @Test
     public void concatenateByteArrays() throws IOException {

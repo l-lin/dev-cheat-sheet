@@ -7,11 +7,6 @@ import java.io.InputStream;
 
 import org.junit.Test;
 
-/**
- * @author Oodrive
- * @author llin
- * @created 06/02/15 10:37
- */
 public class Streams {
     @Test
     public void usingByteStreams() throws IOException {

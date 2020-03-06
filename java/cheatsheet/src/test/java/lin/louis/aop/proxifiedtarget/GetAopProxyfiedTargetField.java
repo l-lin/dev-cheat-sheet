@@ -14,8 +14,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 /**
  * @author Oodrive
- * @author llin
- * @created 22/05/14 10:38
  */
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = TestConfig.class)

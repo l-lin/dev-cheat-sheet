@@ -1,9 +1,5 @@
 package lin.louis.exercice.palindrome;
 
-/**
- * @author llin
- * @created 14/05/14.
- */
 public class Palindrome {
     public static boolean isPalindrome(String str) {
         if (str == null || "".equals(str)) {

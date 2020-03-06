@@ -2,7 +2,6 @@ package lin.louis.aop.annotation;
 
 import java.lang.reflect.Method;
 
-import com.google.common.base.Throwables;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
@@ -13,12 +12,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 
-import static com.google.common.base.Preconditions.checkNotNull;
 
 /**
  * The type Annotation on method aspect.
- * @author llin
- * @created 20 /05/14 10:08
  */
 @Aspect
 @Order(1)
@@ -46,8 +42,7 @@ public class AnnotationOnMethodAspect {
         }
         Method method = retrieveTargetMethodFrom(joinPoint);
         logger.info("Method is: " + method.getName());
-        AnnotationOnMethod annotationOnMethod = checkNotNull(method.getAnnotation(AnnotationOnMethod.class),
-                "Annotation " + AnnotationOnMethod.class.getName() + " not found for method " + method.getName());
+        AnnotationOnMethod annotationOnMethod = method.getAnnotation(AnnotationOnMethod.class);
         String annotationValue = annotationOnMethod.value();
         logger.info("Annotation value is: " + annotationValue);
         Object retVal = joinPoint.proceed();
@@ -63,7 +58,7 @@ public class AnnotationOnMethodAspect {
      */
     private Method retrieveTargetMethodFrom(ProceedingJoinPoint joinPoint) {
         MethodSignature signature = (MethodSignature) joinPoint.getSignature();
-        Method method = checkNotNull(signature.getMethod(), "Could not find the tracked method!");
+        Method method = signature.getMethod();
         // Do not fetch the method of the interface
         if (method.getDeclaringClass().isInterface()) {
             try {

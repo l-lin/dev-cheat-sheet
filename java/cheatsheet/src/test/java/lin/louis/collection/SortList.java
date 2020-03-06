@@ -1,20 +1,15 @@
 package lin.louis.collection;
 
-import lombok.Data;
-import org.assertj.core.data.Index;
-import org.junit.Test;
+import static org.assertj.core.api.Assertions.assertThat;
 
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
-import static com.google.common.collect.Lists.newArrayList;
-import static org.assertj.core.api.Assertions.*;
+import org.assertj.core.data.Index;
+import org.junit.Test;
 
-/**
- * @author llin
- * @created 10/05/14.
- */
 public class SortList {
     @Test
     public void sortWithImplementingComparable() {
@@ -22,7 +17,7 @@ public class SortList {
         PersonImplComparable bar = new PersonImplComparable("Bar", 20);
         PersonImplComparable moliku = new PersonImplComparable("Moliku", 20);
         PersonImplComparable foobar = new PersonImplComparable("Foobar", 5);
-        List<PersonImplComparable> personList = newArrayList(foo, moliku, bar, foobar);
+        List<PersonImplComparable> personList = Arrays.asList(foo, moliku, bar, foobar);
 
         Collections.sort(personList);
 
@@ -38,19 +33,16 @@ public class SortList {
         Person bar = new Person("Bar", 20);
         Person moliku = new Person("Moliku", 20);
         Person foobar = new Person("Foobar", 5);
-        List<Person> personList = newArrayList(foo, moliku, bar, foobar);
+        List<Person> personList = Arrays.asList(foo, moliku, bar, foobar);
 
-        Comparator<Person> comparator = new Comparator<Person>() {
-            @Override
-            public int compare(Person person1, Person person2) {
-                if (person1.getAge() - person2.getAge() == 0) {
-                    return person1.getName().compareTo(person2.getName());
-                }
-                return person1.getAge() - person2.getAge();
-            }
-        };
+        Comparator<Person> comparator = (person1, person2) -> {
+			if (person1.getAge() - person2.getAge() == 0) {
+				return person1.getName().compareTo(person2.getName());
+			}
+			return person1.getAge() - person2.getAge();
+		};
 
-        Collections.sort(personList, comparator);
+        personList.sort(comparator);
 
         assertThat(personList).contains(foobar, Index.atIndex(0))
                 .contains(foo, Index.atIndex(1))
@@ -60,18 +52,25 @@ public class SortList {
 
     // -------------------
 
-    @Data
-    private class Person {
-        private String name;
-        private int age;
+    private static class Person {
+        private final String name;
+        private final int age;
 
         public Person(String name, int age) {
             this.name = name;
             this.age = age;
         }
-    }
 
-    private class PersonImplComparable extends Person implements Comparable<Person> {
+		String getName() {
+			return name;
+		}
+
+		int getAge() {
+			return age;
+		}
+	}
+
+    private static class PersonImplComparable extends Person implements Comparable<Person> {
         public PersonImplComparable(String name, int age) {
             super(name, age);
         }

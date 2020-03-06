@@ -1,17 +1,14 @@
 package lin.louis.protocol;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import java.net.MalformedURLException;
 import java.net.URL;
 
 import org.junit.Test;
 
-import static org.assertj.core.api.Assertions.assertThat;
-
 /**
  * Java will look automatically at the package "sun.net.www.protocol.lin".
- *
- * @author llin
- * @created 12/02/15 10:14
  */
 public class CustomProtocol {
     @Test

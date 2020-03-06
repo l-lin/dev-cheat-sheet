@@ -1,20 +1,16 @@
 package lin.louis.collection;
 
-import org.junit.Test;
+import static org.assertj.core.api.Assertions.assertThat;
 
+import java.util.Arrays;
 import java.util.List;
 
-import static com.google.common.collect.Lists.newArrayList;
-import static org.assertj.core.api.Assertions.*;
+import org.junit.Test;
 
-/**
- * @author llin
- * @created 10/05/14.
- */
 public class DichotomySearch {
     @Test
     public void dichotomySearch() {
-        List<Integer> list = newArrayList(1, 2, 3, 4, 5, 5, 8, 17, 20, 22, 23);
+        List<Integer> list = Arrays.asList(1, 2, 3, 4, 5, 5, 8, 17, 20, 22, 23);
         assertThat(isInList(list, 3)).isTrue();
         assertThat(isInList(list, 5)).isTrue();
         assertThat(isInList(list, 24)).isFalse();

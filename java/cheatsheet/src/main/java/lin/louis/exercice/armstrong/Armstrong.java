@@ -1,9 +1,5 @@
 package lin.louis.exercice.armstrong;
 
-/**
- * @author llin
- * @created 14/05/14.
- */
 public class Armstrong {
     public static boolean isArmstrong(int number) {
         if (number < 100 || number >= 1000) {

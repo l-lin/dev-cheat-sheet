@@ -1,11 +1,7 @@
 package lin.louis.exercice.fizzbuzz;
 
-/**
- * @author llin
- * @created 14/05/14.
- */
 public class FizzBuzz {
-    public static void main(String[] argv) throws Exception {
+    public static void main(String[] argv) {
         System.out.println(fizzBuzz(" ", 100));
     }
 

@@ -1,17 +1,13 @@
 package lin.louis.date;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.GregorianCalendar;
 
 import org.junit.Test;
 
-import static org.assertj.core.api.Assertions.assertThat;
-
-/**
- * @author llin
- * @created 14/05/14 10:36
- */
 public class FormatDate {
     @Test
     public void formatDate() {

@@ -1,16 +1,12 @@
 package lin.louis.collection;
 
-import org.junit.Test;
+import static org.assertj.core.api.Assertions.assertThat;
 
 import java.util.Arrays;
 import java.util.List;
 
-import static org.assertj.core.api.Assertions.*;
+import org.junit.Test;
 
-/**
- * @author llin
- * @created 09/05/14.
- */
 public class ArrayToList {
     @Test
     public void toList() {

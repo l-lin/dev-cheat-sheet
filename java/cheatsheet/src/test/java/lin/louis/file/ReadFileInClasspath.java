@@ -1,5 +1,7 @@
 package lin.louis.file;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -8,13 +10,6 @@ import java.util.stream.Collectors;
 
 import org.junit.Test;
 
-import static org.assertj.core.api.Assertions.assertThat;
-
-/**
- * @author Oodrive
- * @author llin
- * @created 27/05/14 17:43
- */
 public class ReadFileInClasspath {
     @Test
     public void readFile() throws IOException {

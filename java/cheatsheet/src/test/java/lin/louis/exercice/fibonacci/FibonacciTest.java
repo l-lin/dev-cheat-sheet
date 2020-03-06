@@ -1,13 +1,9 @@
 package lin.louis.exercice.fibonacci;
 
-import org.junit.Test;
-
 import static org.assertj.core.api.Assertions.assertThat;
 
-/**
- * @author llin
- * @created 14/05/14.
- */
+import org.junit.Test;
+
 public class FibonacciTest {
     @Test
     public void testFibonacci() {

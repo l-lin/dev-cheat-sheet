@@ -1,17 +1,12 @@
 package lin.louis.uri;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import java.net.URI;
 
 import org.junit.Test;
 import org.springframework.web.util.UriComponentsBuilder;
 
-import static org.assertj.core.api.Assertions.assertThat;
-
-/**
- * @author Oodrive
- * @author llin
- * @created 25/07/14 09:56
- */
 public class BuildUri {
     @Test
     public void buildUriWithSpring() {

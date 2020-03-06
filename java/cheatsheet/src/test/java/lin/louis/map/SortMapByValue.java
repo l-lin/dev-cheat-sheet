@@ -1,24 +1,17 @@
 package lin.louis.map;
 
-import org.junit.Test;
-
-import java.util.Collections;
-import java.util.Comparator;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
-import static com.google.common.collect.Lists.newLinkedList;
-import static com.google.common.collect.Maps.newHashMap;
-import static com.google.common.collect.Maps.newLinkedHashMap;
+import org.junit.Test;
 
-/**
- * @author llin
- * @created 12/05/14.
- */
 public class SortMapByValue {
     @Test
     public void sortMapByValue() {
-        Map<Integer, String> map = newHashMap();
+        Map<Integer, String> map = new HashMap<>();
         map.put(1, "Foo");
         map.put(3, "Bar");
         map.put(5, "Moliku");
@@ -37,15 +30,10 @@ public class SortMapByValue {
     }
 
     private Map<Integer, String> sortMap(Map<Integer, String> map) {
-        List<Map.Entry<Integer, String>> list = newLinkedList(map.entrySet());
-        Collections.sort(list, new Comparator<Map.Entry<Integer, String>>() {
-            @Override
-            public int compare(Map.Entry<Integer, String> o1, Map.Entry<Integer, String> o2) {
-                return o1.getValue().compareTo(o2.getValue());
-            }
-        });
+        List<Map.Entry<Integer, String>> list = new LinkedList<>(map.entrySet());
+        list.sort(Map.Entry.comparingByValue());
 
-        Map<Integer, String> sortedMap = newLinkedHashMap();
+        Map<Integer, String> sortedMap = new LinkedHashMap<>();
         for (Map.Entry<Integer, String> entry : list) {
             sortedMap.put(entry.getKey(), entry.getValue());
         }

@@ -1,9 +1,5 @@
 package lin.louis.exercice.fibonacci;
 
-/**
- * @author llin
- * @created 14/05/14.
- */
 public class Fibonacci {
     public static int fibonacci(int nb) {
         if (nb <= 1) {

@@ -1,32 +1,26 @@
 package lin.louis.exercice.duplicatesegment;
 
-import lombok.Data;
 
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import static com.google.common.collect.Lists.newArrayList;
-import static com.google.common.collect.Sets.newHashSet;
 
-/**
- * @author llin
- * @created 14/05/14.
- */
 public class DuplicateSegment {
     public static boolean hasDuplicateSegment(String line) {
         assert line != null;
 
-        List<Segment> segmentList = newArrayList();
+        List<Segment> segmentList = new ArrayList<>();
         for (int i = 0; i < line.length() - 1; i++) {
             segmentList.add(new Segment(line.charAt(i), line.charAt(i + 1)));
         }
 
-        Set<Segment> segmentSet = newHashSet(segmentList);
+        Set<Segment> segmentSet = new HashSet<>(segmentList);
 
         return segmentList.size() != segmentSet.size();
     }
 
-    @Data
     public static class Segment {
         private char prev;
         private char next;
@@ -36,7 +30,23 @@ public class DuplicateSegment {
             this.next = next;
         }
 
-        public String value() {
+		public char getPrev() {
+			return prev;
+		}
+
+		public void setPrev(char prev) {
+			this.prev = prev;
+		}
+
+		public char getNext() {
+			return next;
+		}
+
+		public void setNext(char next) {
+			this.next = next;
+		}
+
+		public String value() {
             if (prev > next) {
                 return String.valueOf(next) + String.valueOf(prev);
             }

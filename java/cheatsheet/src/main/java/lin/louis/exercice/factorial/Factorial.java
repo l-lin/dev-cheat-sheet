@@ -1,9 +1,5 @@
 package lin.louis.exercice.factorial;
 
-/**
- * @author llin
- * @created 15/05/14.
- */
 public class Factorial {
     public static int factorial(int number) {
         if (number <= 1) {

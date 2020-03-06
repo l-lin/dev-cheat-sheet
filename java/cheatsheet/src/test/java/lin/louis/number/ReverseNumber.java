@@ -1,22 +1,18 @@
 package lin.louis.number;
 
-import org.junit.Test;
-
-import java.util.List;
-
-import static com.google.common.collect.Lists.newArrayList;
 import static org.assertj.core.api.Assertions.assertThat;
 
-/**
- * @author llin
- * @created 14/05/14.
- */
+import java.util.ArrayList;
+import java.util.List;
+
+import org.junit.Test;
+
 public class ReverseNumber {
     @Test
     public void reverseNumber() {
         int nb = 987654321;
 
-        List<Integer> integerList = newArrayList();
+        List<Integer> integerList = new ArrayList<>();
 
         do {
             integerList.add(nb % 10);

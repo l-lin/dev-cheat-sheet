@@ -1,5 +1,7 @@
 package lin.louis.file;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -15,13 +17,6 @@ import java.util.List;
 import org.junit.Ignore;
 import org.junit.Test;
 
-import static org.assertj.core.api.Assertions.assertThat;
-
-/**
- * @author Oodrive
- * @author llin
- * @created 07/07/14 16:07
- */
 public class WriteToFile {
     @Test
     @Ignore

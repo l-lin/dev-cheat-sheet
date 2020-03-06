@@ -4,12 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
-/**
- * @author llin
- * @created 14/05/14.
- */
 public class ReverseFizzBuzz {
-    public static void main(String[] argv) throws Exception {
+    public static void main(String[] argv) {
         String line;
         Scanner sc = new Scanner(System.in);
         while (sc.hasNextLine()) {

@@ -1,20 +1,15 @@
 package lin.louis.map;
 
-import org.junit.Test;
-
+import java.util.HashMap;
 import java.util.Map;
 import java.util.TreeMap;
 
-import static com.google.common.collect.Maps.newHashMap;
+import org.junit.Test;
 
-/**
- * @author llin
- * @created 12/05/14.
- */
 public class SortMapByKey {
     @Test
     public void sortMapByKey() {
-        Map<Integer, String> map = newHashMap();
+        Map<Integer, String> map = new HashMap<>();
         map.put(1, "Foo");
         map.put(3, "Bar");
         map.put(5, "Moliku");

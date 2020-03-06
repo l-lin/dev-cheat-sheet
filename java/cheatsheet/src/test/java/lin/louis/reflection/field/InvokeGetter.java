@@ -7,10 +7,6 @@ import org.junit.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-/**
- * @author llin
- * @created 14/05/14 16:50
- */
 public class InvokeGetter {
     @Test
     public void invokeGetter() throws IllegalAccessException, NoSuchMethodException, InvocationTargetException {

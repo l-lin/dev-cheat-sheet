@@ -1,24 +1,20 @@
 package lin.louis.exercice.palindrome;
 
-import org.junit.Test;
-
-import java.util.List;
-
-import static com.google.common.collect.Lists.newArrayList;
 import static org.assertj.core.api.Assertions.assertThat;
 
-/**
- * @author llin
- * @created 14/05/14.
- */
+import java.util.Arrays;
+import java.util.List;
+
+import org.junit.Test;
+
 public class PalindromeTest {
-    private static final List<String> PALINDROMES = newArrayList("strrts", "a", "aBccBa", "");
+    private static final List<String> PALINDROMES = Arrays.asList("strrts", "a", "aBccBa", "");
 
-    private static final List<String> NOT_PALINDROMES = newArrayList("az", "azerttrez", "pAap", "mlkjkl");
+    private static final List<String> NOT_PALINDROMES = Arrays.asList("az", "azerttrez", "pAap", "mlkjkl");
 
-    private static final List<Integer> NB_PALINDROMES = newArrayList(313, 1, 489984);
+    private static final List<Integer> NB_PALINDROMES = Arrays.asList(313, 1, 489984);
 
-    private static final List<Integer> NB_NOT_PALINDROMES = newArrayList(123, 1223, 877);
+    private static final List<Integer> NB_NOT_PALINDROMES = Arrays.asList(123, 1223, 877);
 
     @Test
     public void testIsPalindromeString() {
