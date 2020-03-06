@@ -22,6 +22,7 @@
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 
 		<!-- DEPENDENCIES -->
+		<bouncycastle.jdk15on.version>1.61</bouncycastle.jdk15on.version>
 		<commons-beanutils.version>1.9.4</commons-beanutils.version>
 		<commons-lang3.version>3.9</commons-lang3.version>
     </properties>
@@ -37,6 +38,12 @@
 			<groupId>org.apache.commons</groupId>
 			<artifactId>commons-lang3</artifactId>
 			<version>${commons-lang3.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.bouncycastle</groupId>
+			<artifactId>bcprov-ext-jdk15on</artifactId>
+			<version>${bouncycastle.jdk15on.version}</version>
 		</dependency>
 
 		<!-- SPRING -->
