@@ -5,9 +5,10 @@ import static org.assertj.core.api.Assertions.assertThat;
 import java.util.Arrays;
 import java.util.List;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
-public class PalindromeTest {
+
+class PalindromeTest {
     private static final List<String> PALINDROMES = Arrays.asList("strrts", "a", "aBccBa", "");
 
     private static final List<String> NOT_PALINDROMES = Arrays.asList("az", "azerttrez", "pAap", "mlkjkl");
@@ -17,7 +18,7 @@ public class PalindromeTest {
     private static final List<Integer> NB_NOT_PALINDROMES = Arrays.asList(123, 1223, 877);
 
     @Test
-    public void testIsPalindromeString() {
+    void testIsPalindromeString() {
         for (String str : PALINDROMES) {
             assertThat(Palindrome.isPalindrome(str)).isTrue();
         }
@@ -27,7 +28,7 @@ public class PalindromeTest {
     }
 
     @Test
-    public void testIsPalindromeInteger() {
+    void testIsPalindromeInteger() {
         for (Integer nb : NB_PALINDROMES) {
             assertThat(Palindrome.isPalindrome(nb)).isTrue();
         }

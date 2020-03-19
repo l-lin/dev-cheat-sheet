@@ -6,12 +6,13 @@ import java.util.Arrays;
 import java.util.Comparator;
 
 import org.assertj.core.data.Index;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
-public class SortArray {
+
+class SortArray {
 
     @Test
-    public void sortArray() {
+    void sortArray() {
         Person foo = new Person("Foo", 10);
         Person bar = new Person("Bar", 20);
         Person moliku = new Person("Moliku", 20);
@@ -33,7 +34,7 @@ public class SortArray {
                 .contains(moliku, Index.atIndex(3));
     }
 
-    private class Person {
+    private static class Person {
         private final String name;
         private final int age;
 

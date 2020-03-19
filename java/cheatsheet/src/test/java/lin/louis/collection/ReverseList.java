@@ -7,11 +7,12 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
-public class ReverseList {
+
+class ReverseList {
     @Test
-    public void reverseList() {
+    void reverseList() {
         List<String> list = Arrays.asList("Foo", "Bar", "Moliku", "Foobar");
         Collections.reverse(list);
 
@@ -22,7 +23,7 @@ public class ReverseList {
     }
 
     @Test
-    public void reverseOrderList() {
+    void reverseOrderList() {
         List<String> list = Arrays.asList("Foo", "Bar", "Moliku", "Foobar");
 
         list.sort(Collections.reverseOrder());

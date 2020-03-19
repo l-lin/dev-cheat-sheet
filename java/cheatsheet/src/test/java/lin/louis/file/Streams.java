@@ -5,11 +5,12 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
-public class Streams {
+
+class Streams {
     @Test
-    public void usingByteStreams() throws IOException {
+    void usingByteStreams() throws IOException {
         try (ByteArrayOutputStream outputStream = new ByteArrayOutputStream()) {
             outputStream.write("foobar".getBytes());
 

@@ -5,11 +5,12 @@ import static org.assertj.core.api.Assertions.assertThat;
 import java.util.Arrays;
 import java.util.List;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
-public class ArrayToList {
+
+class ArrayToList {
     @Test
-    public void toList() {
+    void toList() {
         String[] array = new String[]{"foo", "bar", "foobar"};
         List<String> list = Arrays.asList(array);
         assertThat(list).isNotNull().isNotEmpty().contains("foo", "bar", "foobar");

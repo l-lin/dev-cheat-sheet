@@ -8,11 +8,12 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.stream.Collectors;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
-public class ReadFileInClasspath {
+
+class ReadFileInClasspath {
     @Test
-    public void readFile() throws IOException {
+    void readFile() throws IOException {
         try (InputStream in = this.getClass().getClassLoader().getResourceAsStream("file/foo.txt")) {
             readFile(in);
         }

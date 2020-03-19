@@ -6,11 +6,12 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
-public class SortMapByValue {
+
+class SortMapByValue {
     @Test
-    public void sortMapByValue() {
+    void sortMapByValue() {
         Map<Integer, String> map = new HashMap<>();
         map.put(1, "Foo");
         map.put(3, "Bar");

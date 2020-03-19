@@ -9,13 +9,13 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 
-public class GetFieldWithGivenAnnotation {
+class GetFieldWithGivenAnnotation {
 
     @Test
-    public void getFieldsWithGivenAnnotation() {
+    void getFieldsWithGivenAnnotation() {
         // Search on parent class
         List<Field> fieldList = getFields(Foobar.class, Deprecated.class, new ArrayList<>());
         assertThat(fieldList).isNotEmpty().hasSize(2);
@@ -31,10 +31,10 @@ public class GetFieldWithGivenAnnotation {
         }
     }
 
-    public static List<Field> getFields(Class<?> clazz, Class<? extends Annotation> annotationClass, List<Field> fieldList) {
+    static List<Field> getFields(Class<?> clazz, Class<? extends Annotation> annotationClass, List<Field> fieldList) {
         if (clazz != null) {
             Field[] fields = clazz.getDeclaredFields();
-            if (fields != null && fields.length > 0) {
+            if (fields.length > 0) {
                 for (Field field : clazz.getDeclaredFields()) {
                     if (hasAnnotation(field, annotationClass)) {
                         fieldList.add(field);
@@ -59,7 +59,7 @@ public class GetFieldWithGivenAnnotation {
         return false;
     }
 
-    private class Foobar {
+    private static class Foobar {
         @Deprecated
         private String foobarString;
         @Deprecated
@@ -91,7 +91,7 @@ public class GetFieldWithGivenAnnotation {
 		}
 	}
 
-    private class FoobarChild extends Foobar {
+    private static class FoobarChild extends Foobar {
         private Long foobarLong;
         private Double foobarDouble;
 

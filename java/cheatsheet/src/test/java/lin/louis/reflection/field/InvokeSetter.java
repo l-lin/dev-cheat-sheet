@@ -5,13 +5,13 @@ import static org.assertj.core.api.Assertions.assertThat;
 import java.lang.reflect.InvocationTargetException;
 
 import org.apache.commons.beanutils.BeanUtils;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 
-public class InvokeSetter {
+class InvokeSetter {
 
 	@Test
-	public void invokeSetter() throws InvocationTargetException, IllegalAccessException {
+	void invokeSetter() throws InvocationTargetException, IllegalAccessException {
 		Foo foo = new Foo();
 		BeanUtils.setProperty(foo, "id", 123);
 		assertThat(foo.getId()).isEqualTo(123);

@@ -2,9 +2,10 @@ package lin.louis.exercice.factorial;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
-public class FactorialTest {
+
+class FactorialTest {
     @Test
     public void testFactorial() {
         assertThat(Factorial.factorial(3)).isEqualTo(2 * 3);

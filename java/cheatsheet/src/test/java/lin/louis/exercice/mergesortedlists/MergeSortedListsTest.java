@@ -5,11 +5,12 @@ import static org.assertj.core.api.Assertions.assertThat;
 import java.util.Arrays;
 import java.util.List;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
-public class MergeSortedListsTest {
+
+class MergeSortedListsTest {
     @Test
-    public void testMergeSortedLists() {
+    void testMergeSortedLists() {
         List<Integer> list1 = Arrays.asList(1, 2, 4, 6, 8);
         List<Integer> list2 = Arrays.asList(3, 5, 7, 9, 12);
         List<Integer> list = MergeSortedLists.mergeSortedLists(list1, list2);

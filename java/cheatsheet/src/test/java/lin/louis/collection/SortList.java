@@ -8,9 +8,10 @@ import java.util.Comparator;
 import java.util.List;
 
 import org.assertj.core.data.Index;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
-public class SortList {
+
+class SortList {
     @Test
     public void sortWithImplementingComparable() {
         PersonImplComparable foo = new PersonImplComparable("Foo", 10);
@@ -28,7 +29,7 @@ public class SortList {
     }
 
     @Test
-    public void sortListWithComparator() {
+    void sortListWithComparator() {
         Person foo = new Person("Foo", 10);
         Person bar = new Person("Bar", 20);
         Person moliku = new Person("Moliku", 20);

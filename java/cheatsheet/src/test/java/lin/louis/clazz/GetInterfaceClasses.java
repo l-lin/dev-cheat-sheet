@@ -5,9 +5,10 @@ import static org.assertj.core.api.Assertions.assertThat;
 import java.util.List;
 
 import org.apache.commons.lang3.ClassUtils;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
-public class GetInterfaceClasses {
+
+class GetInterfaceClasses {
 
     @Test
     public void getInterfaceClasses() {
@@ -16,14 +17,6 @@ public class GetInterfaceClasses {
         assertThat(getInterfaceClasses(NestedFooBarImpl.class)).isNotNull().isNotEmpty().contains(Foo.class).contains(Bar.class);
     }
 
-    /**
-     * Gets the interfaces of the given class.
-     * If the class does not implement any interface, then thrown an IllegalArgumentException!
-     * Returns at least ONE element!
-     *
-     * @param clazz the clazz
-     * @return the interface class
-     */
     public static Class<?>[] getInterfaceClasses(Class<?> clazz) {
         if (clazz == null) {
             return null;

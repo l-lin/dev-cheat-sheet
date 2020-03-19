@@ -2,11 +2,12 @@ package lin.louis.exercice.armstrong;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
-public class ArmstrongTest {
+
+class ArmstrongTest {
     @Test
-    public void testArmstrong() {
+    void testArmstrong() {
         assertThat(Armstrong.isArmstrong(153)).isTrue();
         assertThat(Armstrong.isArmstrong(371)).isTrue();
         assertThat(Armstrong.isArmstrong(123)).isFalse();

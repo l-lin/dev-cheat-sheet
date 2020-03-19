@@ -5,11 +5,12 @@ import static org.assertj.core.api.Assertions.assertThat;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
-public class ReverseNumber {
+
+class ReverseNumber {
     @Test
-    public void reverseNumber() {
+    void reverseNumber() {
         int nb = 987654321;
 
         List<Integer> integerList = new ArrayList<>();
@@ -28,7 +29,7 @@ public class ReverseNumber {
     }
 
     @Test
-    public void reverseNumberBetterSolution() {
+    void reverseNumberBetterSolution() {
         int nb = 987654321;
         int nbReversed = 0;
 

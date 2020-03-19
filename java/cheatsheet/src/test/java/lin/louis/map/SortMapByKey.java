@@ -4,11 +4,12 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.TreeMap;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
-public class SortMapByKey {
+
+class SortMapByKey {
     @Test
-    public void sortMapByKey() {
+    void sortMapByKey() {
         Map<Integer, String> map = new HashMap<>();
         map.put(1, "Foo");
         map.put(3, "Bar");

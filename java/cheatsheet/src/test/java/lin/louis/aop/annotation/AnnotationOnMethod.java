@@ -10,10 +10,5 @@ import java.lang.annotation.Target;
 @Target(ElementType.METHOD)
 @Inherited
 public @interface AnnotationOnMethod {
-    /**
-     * Value string.
-     *
-     * @return the string
-     */
     String value();
 }

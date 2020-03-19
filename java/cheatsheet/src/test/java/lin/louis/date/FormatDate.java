@@ -6,11 +6,12 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.GregorianCalendar;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
-public class FormatDate {
+
+class FormatDate {
     @Test
-    public void formatDate() {
+    void formatDate() {
         GregorianCalendar calendar = new GregorianCalendar(2014, 2, 17);
         Date date = calendar.getTime();
 

@@ -4,11 +4,12 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import java.lang.reflect.InvocationTargetException;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
-public class NewInstance {
+
+class NewInstance {
     @Test
-    public void newInstance() throws NoSuchMethodException, IllegalAccessException, InvocationTargetException, InstantiationException {
+    void newInstance() throws NoSuchMethodException, IllegalAccessException, InvocationTargetException, InstantiationException {
         String foo = String.class.getConstructor().newInstance();
         assertThat(foo).isNotNull();
     }

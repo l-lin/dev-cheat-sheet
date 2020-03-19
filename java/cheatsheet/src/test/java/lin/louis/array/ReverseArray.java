@@ -6,9 +6,10 @@ import static org.assertj.core.data.Index.atIndex;
 import java.util.Arrays;
 import java.util.Collections;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
-public class ReverseArray {
+
+class ReverseArray {
     @Test
     public void reverseOrderArray() {
         String[] array = new String[]{"Foo", "Bar", "Moliku", "Foobar"};

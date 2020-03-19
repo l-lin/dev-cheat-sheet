@@ -5,13 +5,13 @@ import static org.assertj.core.api.Assertions.assertThat;
 import java.util.Arrays;
 import java.util.List;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 
-public class PriorityTasksTest {
+class PriorityTasksTest {
 
 	@Test
-	public void testSortTasks() {
+	void testSortTasks() {
 		List<PriorityTask.Task> taskList = PriorityTask.orderTasks(Arrays.asList(
 				new PriorityTask.Task(4),
 				new PriorityTask.Task(2),

@@ -3,16 +3,20 @@ package lin.louis.array;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
-public class ConcatenateByteArrays {
+
+class ConcatenateByteArrays {
     @Test
-    public void concatenateByteArrays() throws IOException {
+    void concatenateByteArrays() throws IOException {
         byte[] a = new byte[2018];
         byte[] b = new byte[2018];
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
         byteArrayOutputStream.write(a);
         byteArrayOutputStream.write(b);
         byte[] c = byteArrayOutputStream.toByteArray();
+
+		Assertions.assertEquals(4036, c.length);
     }
 }

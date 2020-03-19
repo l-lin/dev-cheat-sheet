@@ -6,21 +6,22 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
-import org.junit.Before;
-import org.junit.Ignore;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Test;
 
-public class ArrayListOrLinkedList {
+
+class ArrayListOrLinkedList {
     private static final int MAX_INTERATION = 1000000;
 
-    private static final int NB_COMPARAISON = 100;
+    private static final int NB_COMPARISON = 100;
 
     private List<Foo> arrayList = new ArrayList<>(MAX_INTERATION);
 
     private List<Foo> linkedList = new LinkedList<>();
 
-    @Before
-    public void setUp() {
+    @BeforeEach
+    void setUp() {
         for (int i = 0; i < MAX_INTERATION; i++) {
             arrayList.add(new Foo());
             linkedList.add(new Foo());
@@ -31,11 +32,11 @@ public class ArrayListOrLinkedList {
      * ArrayList is the winner
      */
     @Test
-    @Ignore
-    public void testPerformanceForLoop() {
+    @Disabled
+    void testPerformanceForLoop() {
         int nbTestArraySlowerLinked = 0;
         int nbTestLinkedSlowerArray = 0;
-        for (int i = 0; i < NB_COMPARAISON; i++) {
+        for (int i = 0; i < NB_COMPARISON; i++) {
             long arrayListStartTime = System.currentTimeMillis();
             for (int j = 0; j < MAX_INTERATION; j++) {
                 Integer id = arrayList.get(i).getId();
@@ -64,11 +65,11 @@ public class ArrayListOrLinkedList {
      * ArrayList is the winner
      */
     @Test
-    @Ignore
+    @Disabled
     public void testPerformanceForEachLoop() {
         int nbTestArraySlowerLinked = 0;
         int nbTestLinkedSlowerArray = 0;
-        for (int i = 0; i < NB_COMPARAISON; i++) {
+        for (int i = 0; i < NB_COMPARISON; i++) {
             long arrayListStartTime = System.currentTimeMillis();
             for (Foo foo : arrayList) {
                 Integer id = foo.getId();
@@ -97,11 +98,11 @@ public class ArrayListOrLinkedList {
      * ArrayList is the winner
      */
     @Test
-    @Ignore
+    @Disabled
     public void testPerformanceIteratorLoop() {
         int nbTestArraySlowerLinked = 0;
         int nbTestLinkedSlowerArray = 0;
-        for (int i = 0; i < NB_COMPARAISON; i++) {
+        for (int i = 0; i < NB_COMPARISON; i++) {
             long arrayListStartTime = System.currentTimeMillis();
             Iterator<Foo> iterator = arrayList.iterator();
             while (iterator.hasNext()) {
@@ -127,7 +128,6 @@ public class ArrayListOrLinkedList {
 
         displayResult(nbTestArraySlowerLinked, nbTestLinkedSlowerArray);
     }
-
 
     private void displayResult(final int nbTestArraySlowerLinked, final int nbTestLinkedSlowerArray) {
         System.out.println("Nb test where ArrayList is slower than LinkedList: " + nbTestArraySlowerLinked);

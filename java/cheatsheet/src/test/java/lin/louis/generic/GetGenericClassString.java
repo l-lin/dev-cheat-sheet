@@ -2,15 +2,16 @@ package lin.louis.generic;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
-public class GetGenericClassString extends GetGenericClass<String> {
+
+class GetGenericClassString extends GetGenericClass<String> {
     public GetGenericClassString() {
         super();
     }
 
     @Test
-    public void testGetGenericClass() {
+    void testGetGenericClass() {
         GetGenericClassString getGenericClass = new GetGenericClassString();
         assertThat(getGenericClass.getType()).isEqualTo(String.class);
     }

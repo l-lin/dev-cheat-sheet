@@ -12,31 +12,16 @@ import org.slf4j.LoggerFactory;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 
-/**
- * @author Oodrive
- * @author llin
- * @created 21/05/14 12:40
- */
 @Aspect
 @Order(1)
 @Component
 public class MethodAspect {
     private static Logger logger = LoggerFactory.getLogger(MethodAspect.class);
 
-    /**
-     * Method to track.
-     */
     @Pointcut("execution(* lin.louis.aop.mock.FooService.foo(..))")
     public void methodToTrack() {
     }
 
-    /**
-     * Track object.
-     *
-     * @param joinPoint the join point
-     * @return the object
-     * @throws Throwable the throwable
-     */
     @Around("methodToTrack()")
     public Object track(final ProceedingJoinPoint joinPoint) throws Throwable {
         Object[] arguments = joinPoint.getArgs();
@@ -50,12 +35,6 @@ public class MethodAspect {
         return retVal;
     }
 
-    /**
-     * Retrieve the IMPLEMENTATION method from the joinpoint.
-     *
-     * @param joinPoint the join point
-     * @return the method
-     */
     private Method retrieveTargetMethodFrom(ProceedingJoinPoint joinPoint) {
         MethodSignature signature = (MethodSignature) joinPoint.getSignature();
         Method method = signature.getMethod();

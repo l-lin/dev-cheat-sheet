@@ -6,9 +6,10 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
-public class CountDuplicateItems {
+
+class CountDuplicateItems {
     @Test
     public void countDuplicateItems() {
         List<String> list = Arrays.asList("A", "B", "C", "A", "D", "C", "A", "A", "B", "B");

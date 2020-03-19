@@ -9,11 +9,12 @@ import javax.validation.Validation;
 import javax.validation.Validator;
 import javax.validation.ValidatorFactory;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
-public class JSR303Validation {
+
+class JSR303Validation {
     @Test
-    public void testValidate() {
+    void testValidate() {
         JSR303Foo foo = new JSR303Foo();
         ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
         Validator validator = factory.getValidator();

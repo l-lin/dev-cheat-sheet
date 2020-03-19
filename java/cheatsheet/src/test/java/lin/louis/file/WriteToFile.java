@@ -14,13 +14,14 @@ import java.nio.file.StandardOpenOption;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.junit.Ignore;
-import org.junit.Test;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Test;
 
-public class WriteToFile {
+
+class WriteToFile {
     @Test
-    @Ignore
-    public void writeToFile() throws IOException {
+    @Disabled
+    void writeToFile() throws IOException {
         Path path = Paths.get("/home/llin/tmp", "foobar.txt");
         List<String> content = new ArrayList<>();
         content.add("foo");
@@ -32,8 +33,8 @@ public class WriteToFile {
     }
 
     @Test
-    @Ignore
-    public void writeUsingFileOutputStream() throws IOException {
+    @Disabled
+    void writeUsingFileOutputStream() throws IOException {
         try (OutputStream out = new FileOutputStream("/home/llin/tmp/foobar.txt")) {
             out.write("foobar".getBytes());
         }

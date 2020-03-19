@@ -3,13 +3,13 @@ package lin.louis.reflection.field;
 import java.lang.reflect.InvocationTargetException;
 
 import org.apache.commons.beanutils.PropertyUtils;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class InvokeGetter {
+class InvokeGetter {
     @Test
-    public void invokeGetter() throws IllegalAccessException, NoSuchMethodException, InvocationTargetException {
+    void invokeGetter() throws IllegalAccessException, NoSuchMethodException, InvocationTargetException {
         Foo foo = new Foo();
         foo.setId(123);
 
@@ -17,7 +17,7 @@ public class InvokeGetter {
         assertThat(id).isEqualTo(123);
     }
 
-    public class Foo {
+    public static class Foo {
         private Integer id;
 
         public Integer getId() {

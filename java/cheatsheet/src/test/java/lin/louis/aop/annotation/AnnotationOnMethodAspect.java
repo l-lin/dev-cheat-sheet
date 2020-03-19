@@ -13,27 +13,15 @@ import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 
 
-/**
- * The type Annotation on method aspect.
- */
 @Aspect
 @Order(1)
 @Component
 public class AnnotationOnMethodAspect {
     private static Logger logger = LoggerFactory.getLogger(AnnotationOnMethodAspect.class);
 
-    /**
-     * Method to track.
-     */
     @Pointcut("execution(@lin.louis.aop.annotation.AnnotationOnMethod * *(..))")
     public void methodToTrack() {}
 
-    /**
-     * Track object.
-     *
-     * @param joinPoint the join point
-     * @return the object
-     */
     @Around("methodToTrack()")
     public Object track(final ProceedingJoinPoint joinPoint) throws Throwable {
         Object[] arguments = joinPoint.getArgs();
@@ -50,12 +38,6 @@ public class AnnotationOnMethodAspect {
         return retVal;
     }
 
-    /**
-     * Retrieve the IMPLEMENTATION method from the joinpoint.
-     *
-     * @param joinPoint the join point
-     * @return the method
-     */
     private Method retrieveTargetMethodFrom(ProceedingJoinPoint joinPoint) {
         MethodSignature signature = (MethodSignature) joinPoint.getSignature();
         Method method = signature.getMethod();

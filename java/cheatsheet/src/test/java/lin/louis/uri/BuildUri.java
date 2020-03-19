@@ -4,12 +4,12 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import java.net.URI;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.springframework.web.util.UriComponentsBuilder;
 
-public class BuildUri {
+class BuildUri {
     @Test
-    public void buildUriWithSpring() {
+    void buildUriWithSpring() {
         String user = "foobar";
         URI uri = UriComponentsBuilder.fromUriString("http://localhost:8080/foobar")
                 .path("/api/foo")
