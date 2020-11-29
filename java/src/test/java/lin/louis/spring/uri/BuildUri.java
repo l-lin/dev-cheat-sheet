@@ -1,4 +1,4 @@
-package lin.louis.uri;
+package lin.louis.spring.uri;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
