@@ -8,8 +8,8 @@ import java.util.GregorianCalendar;
 
 import org.junit.jupiter.api.Test;
 
-
 class FormatDate {
+
     @Test
     void formatDate() {
         GregorianCalendar calendar = new GregorianCalendar(2014, 2, 17);

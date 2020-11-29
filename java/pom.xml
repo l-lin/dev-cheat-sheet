@@ -5,7 +5,7 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>2.2.4.RELEASE</version>
+        <version>2.4.0</version>
         <relativePath/>
     </parent>
 
@@ -29,6 +29,11 @@
 
     <dependencies>
 		<!-- COMMON -->
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <scope>provided</scope>
+        </dependency>
 		<dependency>
 			<groupId>commons-beanutils</groupId>
 			<artifactId>commons-beanutils</artifactId>
@@ -39,12 +44,19 @@
 			<artifactId>commons-lang3</artifactId>
 			<version>${commons-lang3.version}</version>
 		</dependency>
-
 		<dependency>
 			<groupId>org.bouncycastle</groupId>
 			<artifactId>bcprov-ext-jdk15on</artifactId>
 			<version>${bouncycastle.jdk15on.version}</version>
 		</dependency>
+        <dependency>
+            <groupId>javax.validation</groupId>
+            <artifactId>validation-api</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.hibernate.validator</groupId>
+            <artifactId>hibernate-validator</artifactId>
+        </dependency>
 
 		<!-- SPRING -->
         <dependency>

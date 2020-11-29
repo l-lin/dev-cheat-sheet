@@ -11,7 +11,7 @@ import org.junit.jupiter.api.Test;
 class GetInterfaceClasses {
 
     @Test
-    public void getInterfaceClasses() {
+    void getInterfaceClasses() {
         assertThat(getInterfaceClasses(FooImpl.class)).isNotNull().isNotEmpty().contains(Foo.class);
         assertThat(getInterfaceClasses(FooBarImpl.class)).isNotNull().isNotEmpty().contains(Foo.class).contains(Bar.class);
         assertThat(getInterfaceClasses(NestedFooBarImpl.class)).isNotNull().isNotEmpty().contains(Foo.class).contains(Bar.class);

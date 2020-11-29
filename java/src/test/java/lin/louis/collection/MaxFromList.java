@@ -8,10 +8,10 @@ import java.util.List;
 
 import org.junit.jupiter.api.Test;
 
-
 class MaxFromList {
+
     @Test
-    public void getMaxFromList() {
+    void getMaxFromList() {
         List<Integer> list = Arrays.asList(2, 3, 1, 9, 4);
         assertThat(Collections.max(list)).isEqualTo(9);
     }

@@ -8,10 +8,10 @@ import java.util.List;
 
 import org.junit.jupiter.api.Test;
 
-
 class CountDuplicateItems {
+
     @Test
-    public void countDuplicateItems() {
+    void countDuplicateItems() {
         List<String> list = Arrays.asList("A", "B", "C", "A", "D", "C", "A", "A", "B", "B");
         assertThat(Collections.frequency(list, "A")).isEqualTo(4);
         assertThat(Collections.frequency(list, "B")).isEqualTo(3);

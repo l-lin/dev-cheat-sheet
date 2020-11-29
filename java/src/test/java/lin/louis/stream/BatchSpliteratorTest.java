@@ -1,6 +1,7 @@
 package lin.louis.stream;
 
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import java.util.Collections;
@@ -10,7 +11,10 @@ import java.util.stream.Collectors;
 class BatchSpliteratorTest {
 
     @Test
-    void givenSingleDivisibleListByBatchSize_whenSpliting_thenSplitCorrectly() {
+    @DisplayName("Given single divisible list by batch size, "
+            + "when splitting, "
+            + "then split correctly")
+    void singleDivisibleListByBatchSize() {
         List<Integer> list = List.of(1, 2, 3);
 
         List<List<Integer>> result = BatchSpliterator.batched(list, 3)
@@ -22,7 +26,10 @@ class BatchSpliteratorTest {
     }
 
     @Test
-    void givenDivisibleListByBatchSize_whenSpliting_thenSplitCorrectly() {
+    @DisplayName("Given divisible list by batch size, "
+            + "when splitting, "
+            + "then split correctly")
+    void divisibleListByBatchSize() {
         List<Integer> list = List.of(1, 2, 3, 4, 5, 6, 7, 8, 9);
 
         List<List<Integer>> result = BatchSpliterator.batched(list, 3)
@@ -38,7 +45,10 @@ class BatchSpliteratorTest {
     }
 
     @Test
-    void givenNotDivisibleListByBatchSize_whenSpliting_thenSplitCorrectly() {
+    @DisplayName("Given not divisible list by batch size, "
+            + "when splitting, "
+            + "then split correctly")
+    void notDivisibleListByBatchSize() {
         List<Integer> list = List.of(1, 2, 3, 4, 5, 6, 7, 8);
 
         List<List<Integer>> result = BatchSpliterator.batched(list, 3)
@@ -54,7 +64,10 @@ class BatchSpliteratorTest {
     }
 
     @Test
-    void givenListSizeLowerThanBatchSize_whenSpliting_thenTakeWholeList() {
+    @DisplayName("Given list size lower than batch size, "
+            + "when splitting, "
+            + "then take whole list")
+    void listSizeLowerThanBatchSize() {
         List<Integer> list = List.of(1, 2);
 
         List<List<Integer>> result = BatchSpliterator.batched(list, 3)
@@ -66,7 +79,10 @@ class BatchSpliteratorTest {
     }
 
     @Test
-    void givenEmptyList_whenSplitting_thenReturnEmptyList() {
+    @DisplayName("Given empty list, "
+            + "when splitting, "
+            + "then empty list")
+    void emptyList() {
         List<Integer> list = Collections.emptyList();
 
         List<List<Integer>> result = BatchSpliterator.batched(list, 3)

@@ -7,10 +7,10 @@ import java.util.List;
 
 import org.junit.jupiter.api.Test;
 
-
 class DichotomySearch {
+
     @Test
-    public void dichotomySearch() {
+    void dichotomySearch() {
         List<Integer> list = Arrays.asList(1, 2, 3, 4, 5, 5, 8, 17, 20, 22, 23);
         assertThat(isInList(list, 3)).isTrue();
         assertThat(isInList(list, 5)).isTrue();
@@ -18,7 +18,7 @@ class DichotomySearch {
         assertThat(isInList(list, 21)).isFalse();
     }
 
-    public static boolean isInList(List<Integer> list, int nbToSearch) {
+    private static boolean isInList(List<Integer> list, int nbToSearch) {
         int left = 0;
         int right = list.size() - 1;
         boolean isInList = false;

@@ -12,17 +12,17 @@ import org.junit.jupiter.api.Test;
 
 
 class ArrayListOrLinkedList {
-    private static final int MAX_INTERATION = 1000000;
+    private static final int MAX_ITERATIONS = 1_000_000;
 
     private static final int NB_COMPARISON = 100;
 
-    private List<Foo> arrayList = new ArrayList<>(MAX_INTERATION);
+    private final List<Foo> arrayList = new ArrayList<>(MAX_ITERATIONS);
 
-    private List<Foo> linkedList = new LinkedList<>();
+    private final List<Foo> linkedList = new LinkedList<>();
 
     @BeforeEach
     void setUp() {
-        for (int i = 0; i < MAX_INTERATION; i++) {
+        for (int i = 0; i < MAX_ITERATIONS; i++) {
             arrayList.add(new Foo());
             linkedList.add(new Foo());
         }
@@ -38,14 +38,14 @@ class ArrayListOrLinkedList {
         int nbTestLinkedSlowerArray = 0;
         for (int i = 0; i < NB_COMPARISON; i++) {
             long arrayListStartTime = System.currentTimeMillis();
-            for (int j = 0; j < MAX_INTERATION; j++) {
+            for (int j = 0; j < MAX_ITERATIONS; j++) {
                 Integer id = arrayList.get(i).getId();
             }
             long arrayListEndTime = System.currentTimeMillis();
             long arrayListExecTime = arrayListEndTime - arrayListStartTime;
 
             long linkedListStartTime = System.currentTimeMillis();
-            for (int j = 0; j < MAX_INTERATION; j++) {
+            for (int j = 0; j < MAX_ITERATIONS; j++) {
                 Integer id = linkedList.get(i).getId();
             }
             long linkedListEndTime = System.currentTimeMillis();
@@ -66,7 +66,7 @@ class ArrayListOrLinkedList {
      */
     @Test
     @Disabled
-    public void testPerformanceForEachLoop() {
+    void testPerformanceForEachLoop() {
         int nbTestArraySlowerLinked = 0;
         int nbTestLinkedSlowerArray = 0;
         for (int i = 0; i < NB_COMPARISON; i++) {
@@ -99,7 +99,7 @@ class ArrayListOrLinkedList {
      */
     @Test
     @Disabled
-    public void testPerformanceIteratorLoop() {
+    void testPerformanceIteratorLoop() {
         int nbTestArraySlowerLinked = 0;
         int nbTestLinkedSlowerArray = 0;
         for (int i = 0; i < NB_COMPARISON; i++) {

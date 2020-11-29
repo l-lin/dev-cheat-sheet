@@ -1,4 +1,4 @@
-package lin.louis.aop.annotation;
+package lin.louis.spring.aop.annotation;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Inherited;

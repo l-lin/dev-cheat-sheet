@@ -10,10 +10,10 @@ import java.util.List;
 import org.assertj.core.data.Index;
 import org.junit.jupiter.api.Test;
 
-
 class SortList {
+
     @Test
-    public void sortWithImplementingComparable() {
+    void sortWithImplementingComparable() {
         PersonImplComparable foo = new PersonImplComparable("Foo", 10);
         PersonImplComparable bar = new PersonImplComparable("Bar", 20);
         PersonImplComparable moliku = new PersonImplComparable("Moliku", 20);
@@ -37,11 +37,11 @@ class SortList {
         List<Person> personList = Arrays.asList(foo, moliku, bar, foobar);
 
         Comparator<Person> comparator = (person1, person2) -> {
-			if (person1.getAge() - person2.getAge() == 0) {
-				return person1.getName().compareTo(person2.getName());
-			}
-			return person1.getAge() - person2.getAge();
-		};
+            if (person1.getAge() - person2.getAge() == 0) {
+                return person1.getName().compareTo(person2.getName());
+            }
+            return person1.getAge() - person2.getAge();
+        };
 
         personList.sort(comparator);
 
@@ -54,7 +54,9 @@ class SortList {
     // -------------------
 
     private static class Person {
+
         private final String name;
+
         private final int age;
 
         public Person(String name, int age) {
@@ -62,16 +64,17 @@ class SortList {
             this.age = age;
         }
 
-		String getName() {
-			return name;
-		}
+        String getName() {
+            return name;
+        }
 
-		int getAge() {
-			return age;
-		}
-	}
+        int getAge() {
+            return age;
+        }
+    }
 
     private static class PersonImplComparable extends Person implements Comparable<Person> {
+
         public PersonImplComparable(String name, int age) {
             super(name, age);
         }

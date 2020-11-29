@@ -1,7 +1,8 @@
-package lin.louis.aop.method;
+package lin.louis.spring.aop.annotation;
 
 import java.lang.reflect.Method;
 
+import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
@@ -12,26 +13,29 @@ import org.slf4j.LoggerFactory;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 
+
 @Aspect
 @Order(1)
 @Component
-public class MethodAspect {
-    private static Logger logger = LoggerFactory.getLogger(MethodAspect.class);
+@Slf4j
+public class AnnotationOnMethodAspect {
 
-    @Pointcut("execution(* lin.louis.aop.mock.FooService.foo(..))")
-    public void methodToTrack() {
-    }
+    @Pointcut("execution(@lin.louis.spring.aop.annotation.AnnotationOnMethod * *(..))")
+    public void methodToTrack() {}
 
     @Around("methodToTrack()")
     public Object track(final ProceedingJoinPoint joinPoint) throws Throwable {
         Object[] arguments = joinPoint.getArgs();
         for (Object arg : arguments) {
-            logger.info("Arguments is: " + arg);
+            log.info("Arguments is: " + arg);
         }
         Method method = retrieveTargetMethodFrom(joinPoint);
-        logger.info("Method is: " + method.getName());
+        log.info("Method is: " + method.getName());
+        AnnotationOnMethod annotationOnMethod = method.getAnnotation(AnnotationOnMethod.class);
+        String annotationValue = annotationOnMethod.value();
+        log.info("Annotation value is: " + annotationValue);
         Object retVal = joinPoint.proceed();
-        logger.info("Return value is: " + retVal);
+        log.info("Return value is: " + retVal);
         return retVal;
     }
 

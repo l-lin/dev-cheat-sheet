@@ -1,7 +1,7 @@
-package lin.louis.aop.mock.impl;
+package lin.louis.spring.aop.mock.impl;
 
-import lin.louis.aop.annotation.AnnotationOnMethod;
-import lin.louis.aop.mock.FooService;
+import lin.louis.spring.aop.annotation.AnnotationOnMethod;
+import lin.louis.spring.aop.mock.FooService;
 import org.springframework.stereotype.Service;
 
 @Service

@@ -1,16 +1,17 @@
-package lin.louis.aop.method;
+package lin.louis.spring.aop.method;
 
-import lin.louis.aop.mock.FooService;
-import lin.louis.config.TestConfig;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import lin.louis.spring.aop.mock.FooService;
+import lin.louis.spring.config.TestConfig;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 
-@RunWith(SpringJUnit4ClassRunner.class)
+@ExtendWith(SpringExtension.class)
 @ContextConfiguration(classes = TestConfig.class)
 public class MethodAspectTest {
+
     @Autowired
     private FooService fooService;
 

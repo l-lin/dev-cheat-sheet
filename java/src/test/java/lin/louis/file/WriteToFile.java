@@ -1,6 +1,7 @@
 package lin.louis.file;
 
-import static org.assertj.core.api.Assertions.assertThat;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Test;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -14,11 +15,10 @@ import java.nio.file.StandardOpenOption;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.junit.jupiter.api.Disabled;
-import org.junit.jupiter.api.Test;
-
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class WriteToFile {
+
     @Test
     @Disabled
     void writeToFile() throws IOException {
@@ -29,7 +29,7 @@ class WriteToFile {
         Files.write(path, content, Charset.defaultCharset(), StandardOpenOption.CREATE, StandardOpenOption.APPEND);
 
         File file = new File("/home/llin/tmp/foobar.txt");
-        assertThat(file.exists()).isTrue();
+        assertTrue(file.exists());
     }
 
     @Test

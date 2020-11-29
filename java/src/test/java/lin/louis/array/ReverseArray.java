@@ -8,11 +8,11 @@ import java.util.Collections;
 
 import org.junit.jupiter.api.Test;
 
-
 class ReverseArray {
+
     @Test
-    public void reverseOrderArray() {
-        String[] array = new String[]{"Foo", "Bar", "Moliku", "Foobar"};
+    void reverseOrderArray() {
+        String[] array = new String[] { "Foo", "Bar", "Moliku", "Foobar" };
 
         Arrays.sort(array, Collections.reverseOrder());
 

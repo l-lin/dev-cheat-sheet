@@ -1,6 +1,7 @@
 package lin.louis.stream;
 
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import java.util.Collections;
@@ -10,7 +11,10 @@ import java.util.stream.Collectors;
 class SlidingWindowSpliteratorTest {
 
     @Test
-    void givenLargerListThanWindowSize_whenWindowSplitting_thenGenerate2Streams() {
+    @DisplayName("Given larger list than window size, "
+            + "when window splitting, "
+            + "then generate 2 streams")
+    void largerListThanWindowSize() {
         List<Integer> source = List.of(1, 2, 3, 4);
 
         List<List<Integer>> result = SlidingWindowSpliterator.windowed(source, 3)
@@ -22,7 +26,10 @@ class SlidingWindowSpliteratorTest {
     }
 
     @Test
-    void givenSmallerListThanWindow_whenWindowSplitting_thenGenerateEmptyStream() {
+    @DisplayName("Given smaller list than window size, "
+            + "when window splitting, "
+            + "then generate empty stream")
+    void smallerListThanWindowSize() {
         List<Integer> source = List.of(1, 2);
 
         List<List<Integer>> result = SlidingWindowSpliterator.windowed(source, 3)
@@ -33,6 +40,9 @@ class SlidingWindowSpliteratorTest {
     }
 
     @Test
+    @DisplayName("Given empty list, "
+            + "when window splitting, "
+            + "then generate empty stream")
     void givenEmptyList_whenWindowSplitting_thenGenerateEmptyStream() {
         List<Integer> source = Collections.emptyList();
 
@@ -44,7 +54,10 @@ class SlidingWindowSpliteratorTest {
     }
 
     @Test
-    void givenWindowSize0_whenWindowSplitting_thenGenerateEmptyStream() {
+    @DisplayName("Given window size 0, "
+            + "when window splitting, "
+            + "then generate empty stream")
+    void windowSize0() {
         List<Integer> source = List.of(1, 2, 3, 4);
 
         List<List<Integer>> result = SlidingWindowSpliterator.windowed(source, 0)
@@ -55,7 +68,10 @@ class SlidingWindowSpliteratorTest {
     }
 
     @Test
-    void givenWindowSizeSmallerThanGivenList_whenEstimatingSize_thenShouldEstimateCorrectly() {
+    @DisplayName("Given window size smaller than given list, "
+            + "when estimating size, "
+            + "then should estimate correctly")
+    void windowSizeSmallerThanGivenList() {
         List<Integer> source = List.of(1, 2, 3, 4);
 
         long result = SlidingWindowSpliterator.windowed(source, 3)
@@ -65,7 +81,10 @@ class SlidingWindowSpliteratorTest {
     }
 
     @Test
-    void givenWindowSizeTooBig_whenEstimatingSize_thenShouldReturn0() {
+    @DisplayName("Given window size too big, "
+            + "when estimating size, "
+            + "then should return 0")
+    void windowSizeTooBig() {
         List<Integer> source = List.of(1, 2, 3, 4);
 
         long result = SlidingWindowSpliterator.windowed(source, source.size() + 1)

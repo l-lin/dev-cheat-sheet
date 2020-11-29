@@ -5,7 +5,7 @@ public enum HashAlgo {
 
     private final String name;
 
-    private HashAlgo(String name) {
+    HashAlgo(String name) {
         this.name = name;
     }
 

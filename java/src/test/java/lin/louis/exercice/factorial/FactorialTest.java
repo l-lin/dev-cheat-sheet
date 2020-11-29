@@ -7,7 +7,7 @@ import org.junit.jupiter.api.Test;
 
 class FactorialTest {
     @Test
-    public void testFactorial() {
+    void testFactorial() {
         assertThat(Factorial.factorial(3)).isEqualTo(2 * 3);
         assertThat(Factorial.factorial(4)).isEqualTo(2 * 3 * 4);
         assertThat(Factorial.factorial(5)).isEqualTo(2 * 3 * 4 * 5);
@@ -15,7 +15,7 @@ class FactorialTest {
     }
 
     @Test
-    public void testFactorialRecursive() {
+    void testFactorialRecursive() {
         assertThat(Factorial.factorialRecursive(3)).isEqualTo(2 * 3);
         assertThat(Factorial.factorialRecursive(4)).isEqualTo(2 * 3 * 4);
         assertThat(Factorial.factorialRecursive(5)).isEqualTo(2 * 3 * 4 * 5);

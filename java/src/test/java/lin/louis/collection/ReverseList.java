@@ -9,8 +9,8 @@ import java.util.List;
 
 import org.junit.jupiter.api.Test;
 
-
 class ReverseList {
+
     @Test
     void reverseList() {
         List<String> list = Arrays.asList("Foo", "Bar", "Moliku", "Foobar");

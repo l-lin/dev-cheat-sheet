@@ -1,15 +1,16 @@
 package lin.louis.array;
 
+import org.junit.jupiter.api.Test;
+
 import static org.assertj.core.api.Assertions.assertThat;
 
-import org.junit.Test;
+class BubbleSort {
 
-public class BubbleSort {
     @Test
-    public void bubbleSort() {
-        int[] unsorted = {32, 39, 21, 45, 23, 3};
+    void bubbleSort() {
+        int[] unsorted = { 32, 39, 21, 45, 23, 3 };
         sort(unsorted);
-        int[] sorted = {3, 21, 23, 32, 39, 45};
+        int[] sorted = { 3, 21, 23, 32, 39, 45 };
         assertThat(unsorted).isEqualTo(sorted);
     }
 
