@@ -1,4 +1,4 @@
-package lin.louis.protocol.lin;
+package lin.louis.custom_protocol.lin;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -6,9 +6,11 @@ import java.net.URL;
 import java.net.URLConnection;
 
 /**
- * This will define a new protocol: the "lin:" protocol!!!
+ * This will define a new protocol: the "lin:" protocol.
+ * We must add into a `lin` package.
  */
 public class LinConnection extends URLConnection {
+
     /**
      * Constructs a URL connection to the specified URL. A connection to
      * the object referenced by the URL is not created.
