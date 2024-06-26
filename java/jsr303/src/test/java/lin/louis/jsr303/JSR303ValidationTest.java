@@ -1,17 +1,15 @@
 package lin.louis.jsr303;
 
-import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 
-import javax.validation.ConstraintViolation;
-import javax.validation.Validation;
-import javax.validation.Validator;
-import javax.validation.ValidatorFactory;
+import jakarta.validation.ConstraintViolation;
+import jakarta.validation.Validation;
+import jakarta.validation.Validator;
+import jakarta.validation.ValidatorFactory;
 import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.assertFalse;
 
-@Slf4j
 class JSR303ValidationTest {
 
     @Test
@@ -23,11 +21,11 @@ class JSR303ValidationTest {
         Set<ConstraintViolation<JSR303Foo>> constraintViolations = validator.validate(foo);
 
         assertFalse(constraintViolations.isEmpty());
-        constraintViolations.forEach(constraint -> log.info(
-                "{}.{} {}",
+        constraintViolations.forEach(constraint -> System.out.println(
+                "%s.%s %s".formatted(
                 constraint.getRootBeanClass().getSimpleName(),
                 constraint.getPropertyPath(),
                 constraint.getMessage()
-        ));
+        )));
     }
 }
