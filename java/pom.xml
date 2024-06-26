@@ -2,24 +2,24 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <parent>
-        <groupId>org.springframework.boot</groupId>
-        <artifactId>spring-boot-starter-parent</artifactId>
-        <version>2.6.1</version>
-        <relativePath/>
-    </parent>
-
     <groupId>lin.louis</groupId>
     <artifactId>dev-cheat-sheet</artifactId>
-    <packaging>jar</packaging>
-    <version>1.0-SNAPSHOT</version>
-    <name>java</name>
+    <packaging>pom</packaging>
+    <version>${revision}</version>
+
     <url>http://l-lin.github.io</url>
 
+    <modules>
+        <module>logging-with-aop</module>
+    </modules>
+
     <properties>
-        <java.version>17</java.version>
+        <java.version>21</java.version>
+        <maven.compiler.source>${java.version}</maven.compiler.source>
+        <maven.compiler.target>${java.version}</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+        <revision>1.0-SNAPSHOT</revision>
 
 		<!-- DEPENDENCIES -->
 		<bouncycastle.jdk15on.version>1.69</bouncycastle.jdk15on.version>
@@ -27,93 +27,93 @@
 		<commons-lang3.version>3.12.0</commons-lang3.version>
     </properties>
 
-    <dependencies>
+		<!--   <dependencies> -->
 		<!-- COMMON -->
-        <dependency>
-            <groupId>org.projectlombok</groupId>
-            <artifactId>lombok</artifactId>
-            <scope>provided</scope>
-        </dependency>
-		<dependency>
-			<groupId>commons-beanutils</groupId>
-			<artifactId>commons-beanutils</artifactId>
-			<version>${commons-beanutils.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>org.apache.commons</groupId>
-			<artifactId>commons-lang3</artifactId>
-			<version>${commons-lang3.version}</version>
-		</dependency>
-
-        <!-- SECURITY -->
-		<dependency>
-			<groupId>org.bouncycastle</groupId>
-			<artifactId>bcprov-ext-jdk15on</artifactId>
-			<version>${bouncycastle.jdk15on.version}</version>
-		</dependency>
-
-        <!-- VALIDATION -->
-        <dependency>
-            <groupId>javax.validation</groupId>
-            <artifactId>validation-api</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.hibernate.validator</groupId>
-            <artifactId>hibernate-validator</artifactId>
-        </dependency>
-
-        <!-- REACTIVE -->
-        <dependency>
-            <groupId>io.projectreactor</groupId>
-            <artifactId>reactor-core</artifactId>
-        </dependency>
-
+		<!--       <dependency> -->
+		<!--           <groupId>org.projectlombok</groupId> -->
+		<!--           <artifactId>lombok</artifactId> -->
+		<!--           <scope>provided</scope> -->
+		<!--       </dependency> -->
+		<!-- <dependency> -->
+		<!-- 	<groupId>commons-beanutils</groupId> -->
+		<!-- 	<artifactId>commons-beanutils</artifactId> -->
+		<!-- 	<version>${commons-beanutils.version}</version> -->
+		<!-- </dependency> -->
+		<!-- <dependency> -->
+		<!-- 	<groupId>org.apache.commons</groupId> -->
+		<!-- 	<artifactId>commons-lang3</artifactId> -->
+		<!-- 	<version>${commons-lang3.version}</version> -->
+		<!-- </dependency> -->
+		<!---->
+		<!--       SECURITY -->
+		<!-- <dependency> -->
+		<!-- 	<groupId>org.bouncycastle</groupId> -->
+		<!-- 	<artifactId>bcprov-ext-jdk15on</artifactId> -->
+		<!-- 	<version>${bouncycastle.jdk15on.version}</version> -->
+		<!-- </dependency> -->
+		<!---->
+		<!--       VALIDATION -->
+		<!--       <dependency> -->
+		<!--           <groupId>javax.validation</groupId> -->
+		<!--           <artifactId>validation-api</artifactId> -->
+		<!--       </dependency> -->
+		<!--       <dependency> -->
+		<!--           <groupId>org.hibernate.validator</groupId> -->
+		<!--           <artifactId>hibernate-validator</artifactId> -->
+		<!--       </dependency> -->
+		<!---->
+		<!--       REACTIVE -->
+		<!--       <dependency> -->
+		<!--           <groupId>io.projectreactor</groupId> -->
+		<!--           <artifactId>reactor-core</artifactId> -->
+		<!--       </dependency> -->
+		<!---->
 		<!-- SPRING -->
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-aop</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-web</artifactId>
-        </dependency>
-
-        <!-- TEST -->
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-test</artifactId>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>io.projectreactor</groupId>
-            <artifactId>reactor-test</artifactId>
-            <scope>test</scope>
-        </dependency>
-    </dependencies>
-
-    <build>
-        <plugins>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-compiler-plugin</artifactId>
-                <configuration>
-                    <source>${java.version}</source>
-                    <target>${java.version}</target>
-                </configuration>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-surefire-plugin</artifactId>
-                <configuration>
-                    <includes>
-                        <include>**/*</include>
-                    </includes>
-                </configuration>
-            </plugin>
-        </plugins>
-    </build>
+		<!--       <dependency> -->
+		<!--           <groupId>org.springframework.boot</groupId> -->
+		<!--           <artifactId>spring-boot-starter-aop</artifactId> -->
+		<!--       </dependency> -->
+		<!--       <dependency> -->
+		<!--           <groupId>org.springframework.boot</groupId> -->
+		<!--           <artifactId>spring-boot-starter</artifactId> -->
+		<!--       </dependency> -->
+		<!--       <dependency> -->
+		<!--           <groupId>org.springframework.boot</groupId> -->
+		<!--           <artifactId>spring-boot-starter-web</artifactId> -->
+		<!--       </dependency> -->
+		<!---->
+		<!--       TEST -->
+		<!--       <dependency> -->
+		<!--           <groupId>org.springframework.boot</groupId> -->
+		<!--           <artifactId>spring-boot-starter-test</artifactId> -->
+		<!--           <scope>test</scope> -->
+		<!--       </dependency> -->
+		<!--       <dependency> -->
+		<!--           <groupId>io.projectreactor</groupId> -->
+		<!--           <artifactId>reactor-test</artifactId> -->
+		<!--           <scope>test</scope> -->
+		<!--       </dependency> -->
+		<!--   </dependencies> -->
+		<!---->
+		<!--   <build> -->
+		<!--       <plugins> -->
+		<!--           <plugin> -->
+		<!--               <groupId>org.apache.maven.plugins</groupId> -->
+		<!--               <artifactId>maven-compiler-plugin</artifactId> -->
+		<!--               <configuration> -->
+		<!--                   <source>${java.version}</source> -->
+		<!--                   <target>${java.version}</target> -->
+		<!--               </configuration> -->
+		<!--           </plugin> -->
+		<!--           <plugin> -->
+		<!--               <groupId>org.apache.maven.plugins</groupId> -->
+		<!--               <artifactId>maven-surefire-plugin</artifactId> -->
+		<!--               <configuration> -->
+		<!--                   <includes> -->
+		<!--                       <include>**/*</include> -->
+		<!--                   </includes> -->
+		<!--               </configuration> -->
+		<!--           </plugin> -->
+		<!--       </plugins> -->
+		<!--   </build> -->
 </project>

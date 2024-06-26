@@ -1,0 +1,16 @@
+spring:
+  main:
+    banner-mode: off
+
+management:
+  endpoint:
+    metrics:
+      enabled: true
+    prometheus:
+      enabled: true
+  endpoints:
+    web:
+      exposure:
+        include: info,health,prometheus,loggers
+  server:
+      port: 9121
