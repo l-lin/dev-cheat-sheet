@@ -1,4 +1,4 @@
-package lin.louis.reactor.logging;
+package lin.louis.reactive_logging;
 
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
@@ -6,9 +6,9 @@ import reactor.core.publisher.Flux;
 import reactor.test.StepVerifier;
 import reactor.util.context.Context;
 
-import static lin.louis.reactor.logging.ReactiveMDCLogging.logOnComplete;
-import static lin.louis.reactor.logging.ReactiveMDCLogging.logOnError;
-import static lin.louis.reactor.logging.ReactiveMDCLogging.logOnNext;
+import static lin.louis.reactive_logging.ReactiveMDCLogging.logOnComplete;
+import static lin.louis.reactive_logging.ReactiveMDCLogging.logOnError;
+import static lin.louis.reactive_logging.ReactiveMDCLogging.logOnNext;
 
 @Slf4j
 class ReactiveMDCLoggingTest {

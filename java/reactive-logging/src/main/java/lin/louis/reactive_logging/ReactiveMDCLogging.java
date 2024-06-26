@@ -1,4 +1,4 @@
-package lin.louis.reactor.logging;
+package lin.louis.reactive_logging;
 
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
