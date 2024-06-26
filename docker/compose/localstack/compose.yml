@@ -1,0 +1,15 @@
+services:
+  localstack:
+    container_name: localstack
+    image: localstack/localstack:3.0.2
+    environment:
+      # https://docs.localstack.cloud/references/configuration/
+      SERVICES: s3, sqs, dynamodb
+      DEBUG: 1
+    ports:
+      - 4566:4566
+      - 4510-4559:4510-4559
+    volumes:
+      # script to be executed when localstack is ready, see https://docs.localstack.cloud/references/init-hooks/
+      - "./ready.d:/etc/localstack/init/ready.d:ro"
+      - /var/run/docker.sock:/var/run/docker.sock

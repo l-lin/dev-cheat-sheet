@@ -1,0 +1,50 @@
+services:
+  # ZOOKEEPER ------------------------------------------------------------------------------------
+  zk:
+    image: confluentinc/cp-zookeeper:7.4.1
+    container_name: zk
+    ports:
+      - 2181:2181
+    environment:
+      ZOOKEEPER_CLIENT_PORT: 2181
+      ZOOKEEPER_TICK_TIME: 2000
+    healthcheck:
+      test: ["CMD", "echo", "healthy"]
+      start_period: 5s
+      interval: 5s
+
+  # KAFKA ----------------------------------------------------------------------------------------
+  kafka:
+    image: confluentinc/cp-kafka:7.4.1
+    container_name: kafka
+    depends_on:
+      zk:
+        condition: service_started
+    ports:
+      - 9092:9092
+      - 29092:29092
+    environment:
+      KAFKA_BROKER_ID: 1
+      KAFKA_ZOOKEEPER_CONNECT: zk:2181
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:29092,PLAINTEXT_HOST://localhost:9092
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+    healthcheck:
+      test: "if [[ $(kafka-topics --bootstrap-server localhost:9092 --list | sed '/^[[:blank:]]*$/ d' | wc -l) == 0 ]]; then crash_on_purpose; fi"
+      start_period: 15s
+      interval: 20s
+
+  kafka-setup:
+    image: confluentinc/cp-kafka:7.4.1
+    container_name: kafka-setup
+    depends_on:
+      kafka:
+        condition: service_started
+    command: "bash -c 'echo Waiting for Kafka to be ready... && \
+                       cub kafka-ready -b kafka:29092 1 20 && \
+                       kafka-topics --create --if-not-exists --bootstrap-server kafka:29092 --partitions 1 --replication-factor 1 --topic my-awesome-topic'"
+    environment:
+      # The following settings are listed here only to satisfy the image's requirements.
+      # We override the image's `command` anyways, hence this container will not start a broker.
+      KAFKA_BROKER_ID: ignored
+      KAFKA_ZOOKEEPER_CONNECT: ignored
