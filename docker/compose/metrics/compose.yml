@@ -1,0 +1,45 @@
+services:
+  # PROMETHEUS ------------------------------------------------------------------------------------
+  prometheus:
+    image: prom/prometheus:v2.30.3
+    container_name: prometheus
+    volumes:
+      - ./prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
+    # use the host network as the application is not in a container (e.g. launched from IDE)
+    network_mode: host
+
+  # GRAFANA ------------------------------------------------------------------------------------
+  # UI available on http://localhost:3000
+  grafana:
+    image: grafana/grafana:8.2.1
+    container_name: grafana
+    depends_on:
+      - prometheus
+    environment:
+      GF_SECURITY_ADMIN_PASSWORD__FILE: /run/secrets/admin_password
+    volumes:
+      # set admin password to avoid setting the admin password each time grafana starts up
+      - ./grafana/admin_password:/run/secrets/admin_password
+      # initialize datasources
+      - ./grafana/provisioning/datasources:/etc/grafana/provisioning/datasources
+      # initialize dashboard configuration
+      - ./grafana/provisioning/dashboards:/etc/grafana/provisioning/dashboards
+      # add dashboards
+      - ./grafana/dashboards:/var/lib/grafana/dashboards
+    network_mode: host
+
+  # CADVISOR --------------------------------------------------------------------------------------
+  cadvisor:
+    image: google/cadvisor:v0.33.0
+    container_name: cadvisor
+    mem_limit: 75m
+    ports:
+      - 8081:8080
+    command: [
+      "--disable_metrics=tcp,udp,sched,process,disk,diskIO,network,percpu",
+      "--docker_only=true",
+      "--port=8080",
+      "--storage_duration=2m0s",
+      "--prometheus_endpoint=/metrics",
+      "--application_metrics_count_limit=100"
+    ]

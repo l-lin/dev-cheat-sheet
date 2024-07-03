@@ -1,0 +1,6 @@
+---
+apiVersion: 1
+datasources:
+  - name: prom-primary
+    type: prometheus
+    url: http://localhost:9090
