@@ -1,0 +1,35 @@
+---
+#
+# Local AWS.
+# src: https://github.com/localstack/helm-charts/tree/main/charts/localstack#parameters
+#
+
+# Comma-separated list of AWS CLI service names which should be loaded right when
+# starting LocalStack. If not set, each service is loaded and started on the first
+# request for that service.
+startServices: s3
+
+image:
+  # LocalStack image tag.
+  tag: 3.5.0
+
+ingress:
+  # Enable the use of the ingress controller to access Localstack service.
+  enabled: true
+  hosts:
+    # Hostname of the localstack ingress.
+    - host: localstack.localhost
+      paths:
+        - path: /
+          pathType: Prefix
+
+extraEnvVars:
+  - name: HOSTNAME_EXTERNAL
+    value: localstack
+
+# Run startup scripts.
+enableStartupScripts: true
+startupScriptContent: |-
+  #!/bin/sh
+  awslocal s3 mb s3://bcp-localhost
+

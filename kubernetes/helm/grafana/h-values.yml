@@ -1,0 +1,38 @@
+---
+#
+# https://github.com/bitnami/charts/tree/main/bitnami/grafana
+# Install dashboards from:
+# - https://github.com/dotdc/grafana-dashboards-kubernetes?tab=readme-ov-file#install-via-grafanacom
+# - https://git.bioserenity.com/cloud/ops/end-of-life/ansible-monitoring/-/blob/develop/playbooks/files/provisionning_grafana/dashboards/Service-Acquisition.json
+#
+
+ingress:
+  enabled: true
+  hostname: grafana.localhost
+
+metrics:
+  enabled: true
+  serviceMonitor:
+    enabled: true
+
+admin:
+  user: admin
+  password: secret
+
+datasources:
+  secretDefinition:
+    apiVersion: 1
+    datasources:
+    - name: Prometheus
+      type: prometheus
+      url: http://prometheus-kube-prometheus-prometheus.swplocal.svc.cluster.local:9090
+      access: proxy
+      isDefault: true
+
+dashboardsProvider:
+  enabled: true
+dashboardsConfigMaps:
+  # Import the Grafana dashboards from a ConfigMap
+  - configMapName: grafana-dashboard-k8s-views-global
+    folderName: dashboards
+    fileName: k8s-views-global.json

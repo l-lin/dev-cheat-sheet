@@ -1,0 +1,68 @@
+---
+#
+# src: https://github.com/bitnami/charts/tree/main/bitnami/kube-prometheus#parameters
+#
+
+commonAnnotations:
+  Environment: demo
+
+prometheus:
+  # Add ingress so we can access the prometheus server outside of the cluster.
+  ingress:
+    enabled: true
+    hostname: prometheus.localhost
+
+kubelet:
+  serviceMonitor:
+    cAdvisorRelabelings:
+      # Relabeling is a powerful tool to dynamically rewrite the label set of a target before it gets scraped.
+      # We will use it to insert our "legacy" prometheus labels, such as `Environment`, `name`...
+      # https://prometheus.io/docs/prometheus/latest/configuration/configuration/#relabel_config
+      # List of available prometheus meta labels: https://prometheus.io/docs/prometheus/latest/configuration/configuration/#service
+      - sourceLabels: [__meta_kubernetes_service_annotation_Environment]
+        targetLabel: Environment
+        action: replace
+      - sourceLabels: [__meta_kubernetes_service_name]
+        targetLabel: Instance
+        action: replace
+
+# Disable tools
+alertmanager:
+  enabled: false
+blackboxExporter:
+  enabled: false
+kubeApiServer:
+  enabled: false
+kubeProxy:
+  enabled : false
+
+
+---
+# You can add ServiceMonitor for prometheus to discover the service to scrape.
+#apiVersion: monitoring.coreos.com/v1
+#kind: ServiceMonitor
+#metadata:
+#  name: app
+#  namespace: demo
+#spec:
+#  endpoints:
+#  - interval: 10s
+#    path: /actuator/prometheus
+#    targetPort: 9121
+#    relabelings:
+#      # List of available prometheus meta labels: https://prometheus.io/docs/prometheus/latest/configuration/configuration/#pod
+#      - sourceLabels: [__meta_kubernetes_pod_annotation_ApplicationName]
+#        targetLabel: Application
+#        action: replace
+#      - sourceLabels: [__meta_kubernetes_pod_annotation_Environment]
+#        targetLabel: Environment
+#        action: replace
+#      - sourceLabels: [__meta_kubernetes_pod_annotation_job]
+#        targetLabel: job
+#        action: replace
+#      - sourceLabels: [__meta_kubernetes_pod_container_image]
+#        targetLabel: image
+#        action: replace
+#      - sourceLabels: [__meta_kubernetes_pod_name]
+#        targetLabel: name
+#        action: replace
