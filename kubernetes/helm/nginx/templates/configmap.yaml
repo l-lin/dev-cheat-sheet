@@ -1,0 +1,68 @@
+---
+# https://kubernetes.io/docs/concepts/configuration/configmap/
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: player-index-html
+data:
+  index.html: |
+    <html>
+    <head>
+    <meta charset="utf-8">
+    <style>
+    #video {
+      width: 720px;
+      height: 480px;
+      background: black;
+    }
+    </style>
+    <script src="https://cdn.jsdelivr.net/npm/hls.js@1.4.3"></script>
+    </head>
+
+    <body>
+
+    <form onsubmit="return false;">
+      <p>
+        <label>ID:</label>
+        <input type="text" id="id" value="235137a0-f940-4510-b6e7-5ec3a0d220d6" />
+      </p>
+      <p>
+        <input type="submit" onclick="play()" value="Play" />
+      </p>
+      <video id="video" controls></video>
+    </form>
+
+    <script>
+    function play() {
+      const domainName = 'http://mediamtx.localhost'
+      const videoSessionId = document.getElementById('video-session-id').value;
+      const url = domainName + '/' + videoSessionId + '/live/master-playlist.m3u8';
+
+      const video = document.getElementById('video');
+      const hls = new Hls({
+        liveSyncDurationCount: 3,
+        xhrSetup: (xhr, url) => {
+          xhr.withCredentials = true;
+          xhr.setRequestHeader('Authorization', 'Bearer stub');
+        }
+      });
+
+      hls.on(Hls.Events.LEVEL_LOADED, (evt, data) => {
+        console.info(data);
+      });
+
+      hls.on(Hls.Events.ERROR, (evt, data) => {
+          if (data.fatal) {
+          hls.destroy();
+          setTimeout(() => {
+              create();
+              }, 2000);
+          }
+          });
+      hls.loadSource(url);
+      hls.attachMedia(video);
+      video.play();
+    }
+    </script>
+    </body>
+    </html>
