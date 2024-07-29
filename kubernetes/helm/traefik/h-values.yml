@@ -1,0 +1,23 @@
+---
+image:
+  tag: v3.1.0-rc3
+providers:
+  kubernetesGateway:
+    enabled: true
+    experimentalChannel: true
+
+ports:
+  rtmp:
+    port: 1935
+    expose:
+      default: true
+    exposedPort: 1935
+    protocol: TCP
+gateway:
+  listeners:
+    websecure: null
+    rtmp:
+      port: 1935
+      hostname:
+      protocol: TCP
+
